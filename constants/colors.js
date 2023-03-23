@@ -1,0 +1,15 @@
+export const colors = {
+  darkbg: "#111b21",
+  primary: "#3D3D3D",
+  accent: "#FF6B6B",
+  icon: "#A0A0A0",
+  white: "#FFFFFF",
+  black: "#000000",
+  red: "#D10000",
+  fbblue: "#3C54A4",
+  blue: "rgba(16, 14, 29, 0.8)",
+  gray: "rgba(217, 217, 217, 0.125)",
+  goblin: "rgba(64, 134, 62, 0.75)",
+  active: "rgba(255, 153, 0, 0.9)",
+  text: "rgba(255, 255, 255, 0.95)",
+};
