@@ -2,7 +2,7 @@ import { colors } from "./colors";
 
 export const container = {
   flex: 1,
-  backgroundColor: colors.darkbg,
+  backgroundColor: colors.primary,
 };
 
 export const text = {
@@ -40,7 +40,6 @@ export const downloadbtn = {
   padding: 4,
   marginHorizontal: 16,
   borderRadius: 32,
-  backgroundColor: colors.active,
 };
 
 export const deletebtn = {
@@ -52,5 +51,4 @@ export const deletebtn = {
   justifyContent: "center",
   borderWidth: 1,
   borderRadius: 6,
-  borderColor: colors.gray,
 };
