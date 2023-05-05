@@ -1,13 +1,25 @@
-import { Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { NavBar } from "../components/NavBar";
-import { container, text } from "../constants/styles";
+import { useNavigation } from "@react-navigation/native";
+import { BottomBtn } from "../components/buttons/BottomBtn";
+import EntypoIcon from "react-native-vector-icons/Entypo";
+import { container } from "../constants/styles";
+import { colors } from "../constants/colors";
 
 function ProfileScreen() {
+  const navigation = useNavigation();
+
+  const goback = () => navigation.goBack();
+
   return (
     <SafeAreaView style={container}>
-      <NavBar />
-      <Text style={text}>Profile</Text>
+      <BottomBtn
+        title="go back"
+        icon={
+          <EntypoIcon name="chevron-thin-left" size={22} color={colors.text} />
+        }
+        iconfirst
+        onclick={goback}
+      />
     </SafeAreaView>
   );
 }
