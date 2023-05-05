@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   container: {
     position: "absolute",
     bottom: 16,
-    width: "90%",
+    width: "94%",
     alignSelf: "center",
     marginHorizontal: 8,
     paddingVertical: 16,
