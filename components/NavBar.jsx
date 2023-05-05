@@ -1,16 +1,15 @@
-import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import EvIcon from "react-native-vector-icons/EvilIcons";
-import EntIcon from "react-native-vector-icons/Entypo";
+import EntypoIcon from "react-native-vector-icons/Entypo";
+import { SearchIcon } from "../assets/icons/icons";
+import { UserIcon } from "../assets/icons/icons";
 import { colors } from "../constants/colors";
-
-const icon = require("../assets/icon.png");
 
 export const NavBar = ({ screen }) => {
   const navigation = useNavigation();
   const goback = () => navigation.goBack();
   const gotoprofile = () => navigation.navigate("profile");
-  const showsamples = () => navigation.navigate("authentication");
+  const showsamples = () => navigation.navigate("search");
 
   return (
     <View style={styles.container}>
@@ -19,14 +18,14 @@ export const NavBar = ({ screen }) => {
         onPress={screen === "home" ? showsamples : goback}
       >
         {screen === "home" ? (
-          <EntIcon name="list" size={22} color={colors.text} />
+          <SearchIcon />
         ) : (
-          <EvIcon name="chevron-left" size={32} color={colors.text} />
+          <EntypoIcon name="chevron-thin-left" size={20} color={colors.text} />
         )}
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button} onPress={gotoprofile}>
-        <Image source={icon} resizeMode="contain" style={styles.avt} />
+        <UserIcon />
       </TouchableOpacity>
     </View>
   );
@@ -35,8 +34,7 @@ export const NavBar = ({ screen }) => {
 const styles = StyleSheet.create({
   container: {
     paddingVertical: 4,
-    paddingRight: 8,
-    paddingLeft: 6,
+    paddingHorizontal: 8,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
