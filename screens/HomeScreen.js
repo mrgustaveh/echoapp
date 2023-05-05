@@ -9,6 +9,8 @@ import { colors } from "../constants/colors";
 const HomeScreen = () => {
   const navigation = useNavigation();
 
+  const gotocreate = () => navigation.navigate("create");
+
   return (
     <SafeAreaView style={container}>
       <NavBar screen="home" />
@@ -16,7 +18,7 @@ const HomeScreen = () => {
       <BottomBtn
         title="create"
         icon={<AntDeisgnIcon name="plus" color={colors.text} size={22} />}
-        onclick={() => navigation.navigate("detail")}
+        onclick={gotocreate}
       />
     </SafeAreaView>
   );
