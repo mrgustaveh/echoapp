@@ -20,7 +20,7 @@ export const NavBar = ({ screen }) => {
         {screen === "home" ? (
           <SearchIcon />
         ) : (
-          <EntypoIcon name="chevron-thin-left" size={20} color={colors.text} />
+          <EntypoIcon name="chevron-left" size={20} color={colors.text} />
         )}
       </TouchableOpacity>
 
