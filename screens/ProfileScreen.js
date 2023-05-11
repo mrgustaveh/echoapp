@@ -14,9 +14,7 @@ function ProfileScreen() {
     <SafeAreaView style={container}>
       <BottomBtn
         title="go back"
-        icon={
-          <EntypoIcon name="chevron-thin-left" size={22} color={colors.text} />
-        }
+        icon={<EntypoIcon name="chevron-left" size={22} color={colors.text} />}
         iconfirst
         onclick={goback}
       />
