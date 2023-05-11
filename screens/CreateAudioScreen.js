@@ -1,14 +1,47 @@
+import { useState } from "react";
+import { StyleSheet, View, Text, TextInput } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AntDeisgnIcon from "react-native-vector-icons/AntDesign";
 import { NavBar } from "../components/NavBar";
 import { BottomBtn } from "../components/buttons/BottomBtn";
-import { container } from "../constants/styles";
+import { container, subtitle, text } from "../constants/styles";
 import { colors } from "../constants/colors";
 
 const CreateAudioScreen = () => {
+  const [audiotitle, setaudiotitle] = useState("");
+  const [audiocontent, setaudiocontent] = useState("");
+
   return (
     <SafeAreaView style={container}>
       <NavBar />
+
+      <TextInput
+        autoFocus
+        autoCorrect={false}
+        value={audiotitle}
+        onChangeText={(text) => setaudiotitle(text)}
+        placeholder="choose a title"
+        placeholderTextColor={colors.textlight}
+        style={styles.titleinput}
+      />
+
+      <View style={styles.contentctr}>
+        <TextInput
+          value={audiocontent}
+          onChangeText={(text) => setaudiocontent(text)}
+          placeholder="your text..."
+          placeholderTextColor={colors.textlight}
+          style={styles.contentinput}
+          multiline
+          numberOfLines={10}
+        />
+
+        <View style={styles.divider} />
+
+        <Text style={styles.charcount}>
+          {audiocontent.length} / 1024 characters
+        </Text>
+      </View>
 
       <BottomBtn
         title="create"
@@ -18,5 +51,38 @@ const CreateAudioScreen = () => {
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  titleinput: {
+    ...subtitle,
+    padding: 8,
+    marginHorizontal: 8,
+    borderRadius: 6,
+    backgroundColor: colors.accentlight,
+  },
+  contentctr: {
+    marginTop: 16,
+    padding: 8,
+    marginHorizontal: 8,
+    borderRadius: 6,
+    backgroundColor: colors.accentlight,
+  },
+  contentinput: {
+    ...subtitle,
+    maxHeight: 180,
+    textAlignVertical: "top",
+  },
+  divider: {
+    width: "100%",
+    height: 2,
+    marginVertical: 8,
+    borderRadius: 2,
+    backgroundColor: colors.accent,
+  },
+  charcount: {
+    ...text,
+    textAlign: "right",
+  },
+});
 
 export default CreateAudioScreen;
