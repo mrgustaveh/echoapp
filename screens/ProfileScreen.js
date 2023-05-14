@@ -1,10 +1,10 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { BottomBtn } from "../components/buttons/BottomBtn";
 import EntypoIcon from "react-native-vector-icons/Entypo";
 import { Subscriptions } from "../components/profile/Subscriptions";
-import { container, subtitle, text } from "../constants/styles";
+import { container, subtitle, text, title } from "../constants/styles";
 import { colors } from "../constants/colors";
 
 const image = require("../assets/splash.png");
@@ -22,7 +22,11 @@ function ProfileScreen() {
         <Text style={subtitle}>antonymburu563@gmail.com</Text>
       </View>
 
-      <Subscriptions />
+      <Subscriptions currplan="basic" />
+
+      <Pressable>
+        <Text style={[title, styles.logout]}>Log Out</Text>
+      </Pressable>
 
       <BottomBtn
         title="go back"
@@ -39,13 +43,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: 8,
-    marginTop: 32,
+    marginTop: 16,
   },
   image: {
-    width: 100,
-    height: 100,
+    width: 80,
+    height: 80,
     borderRadius: 100,
-    backgroundColor: colors.textlight,
+    resizeMode: "cover",
+  },
+  logout: {
+    marginVertical: 16,
+    marginHorizontal: 16,
+    color: colors.red,
   },
 });
 
