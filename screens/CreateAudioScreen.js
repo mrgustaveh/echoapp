@@ -6,6 +6,7 @@ import { NavBar } from "../components/NavBar";
 import { BottomBtn } from "../components/buttons/BottomBtn";
 import { container, subtitle, text } from "../constants/styles";
 import { colors } from "../constants/colors";
+import { Divider } from "../components/global/Divider";
 
 const CreateAudioScreen = () => {
   const [audiotitle, setaudiotitle] = useState("");
@@ -33,14 +34,18 @@ const CreateAudioScreen = () => {
           placeholderTextColor={colors.textlight}
           style={styles.contentinput}
           multiline
-          numberOfLines={10}
+          numberOfLines={9}
         />
 
-        <View style={styles.divider} />
+        <Divider style={styles.divider} />
 
         <Text style={styles.charcount}>
           {audiocontent.length} / 1024 characters
         </Text>
+      </View>
+
+      <View style={styles.voicesctr}>
+        <Text style={subtitle}>Select a voice to use</Text>
       </View>
 
       <BottomBtn
@@ -54,7 +59,7 @@ const CreateAudioScreen = () => {
 
 const styles = StyleSheet.create({
   titleinput: {
-    ...subtitle,
+    ...text,
     padding: 8,
     marginHorizontal: 8,
     borderRadius: 6,
@@ -68,20 +73,21 @@ const styles = StyleSheet.create({
     backgroundColor: colors.accentlight,
   },
   contentinput: {
-    ...subtitle,
-    maxHeight: 180,
+    ...text,
+    height: 150,
     textAlignVertical: "top",
   },
   divider: {
-    width: "100%",
-    height: 2,
     marginVertical: 8,
-    borderRadius: 2,
-    backgroundColor: colors.accent,
+    borderColor: colors.accent,
   },
   charcount: {
     ...text,
     textAlign: "right",
+  },
+  voicesctr: {
+    marginTop: 12,
+    marginHorizontal: 8,
   },
 });
 
