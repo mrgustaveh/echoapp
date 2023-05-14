@@ -13,7 +13,14 @@ const DetailScreen = () => {
 
       <View style={styles.detailctr}>
         <View style={styles.title}>
-          <Text style={subtitle}>A TITLE</Text>
+          <Text
+            style={[
+              subtitle,
+              { textTransform: "capitalize", fontWeight: "500" },
+            ]}
+          >
+            ATITLE
+          </Text>
 
           <View style={styles.date}>
             <CalendarIcon />
