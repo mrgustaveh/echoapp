@@ -2,7 +2,7 @@ import { useState } from "react";
 import { StyleSheet, View, TextInput } from "react-native";
 import { SearchIcon } from "../../assets/icons/icons";
 import { colors } from "../../constants/colors";
-import { subtitle } from "../../constants/styles";
+import { text } from "../../constants/styles";
 
 export const SearchInput = () => {
   const [searchtxt, setsearchtxt] = useState("");
@@ -17,7 +17,7 @@ export const SearchInput = () => {
         autoCorrect={false}
         value={searchtxt}
         onChangeText={(text) => setsearchtxt(text)}
-        placeholder="search my audio..."
+        placeholder="search my audio (by title or text)..."
         placeholderTextColor={textlight}
         style={styles.input}
       />
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
   },
   input: {
-    ...subtitle,
+    ...text,
     marginLeft: 8,
     maxWidth: "92%",
   },
