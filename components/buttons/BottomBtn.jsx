@@ -20,11 +20,11 @@ export const BottomBtn = ({ title, icon, onclick, iconfirst }) => {
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
-    bottom: 16,
+    bottom: 8,
     width: "94%",
     alignSelf: "center",
     marginHorizontal: 8,
-    paddingVertical: 16,
+    paddingVertical: 10,
     alignItems: "center",
     justifyContent: "center",
     gap: 8,
