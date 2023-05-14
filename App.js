@@ -2,7 +2,6 @@ import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import SplashScreen from "./screens/SplashScreen";
 import Authentication from "./screens/Authentication";
 import HomeScreen from "./screens/HomeScreen";
 import SearchScreen from "./screens/SearchScreen";
@@ -23,12 +22,11 @@ export default function App() {
             animationTypeForReplace: "push",
           }}
         >
+          <Stack.Screen name="authentication" component={Authentication} />
           <Stack.Screen name="home" component={HomeScreen} />
           <Stack.Screen name="search" component={SearchScreen} />
           <Stack.Screen name="create" component={CreateAudioScreen} />
           <Stack.Screen name="detail" component={DetailScreen} />
-          <Stack.Screen name="splash" component={SplashScreen} />
-          <Stack.Screen name="authentication" component={Authentication} />
           <Stack.Screen name="profile" component={ProfileScreen} />
         </Stack.Navigator>
         <StatusBar
