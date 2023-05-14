@@ -1,15 +1,61 @@
-import { Text } from "react-native";
+import { StyleSheet, TouchableOpacity, Image, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { NavBar } from "../components/NavBar";
+import { useNavigation } from "@react-navigation/native";
 import { container, text } from "../constants/styles";
+import { colors } from "../constants/colors";
+
+const googleimg = require("../assets/img/google.png");
+const fbimg = require("../assets/img/fb.png");
 
 function Authentication() {
+  const navigation = useNavigation();
+
+  const ongooglesignin = () =>
+    navigation.reset({ index: 1, routes: [{ name: "home" }] });
+
+  const onfbsignin = () =>
+    navigation.reset({ index: 1, routes: [{ name: "home" }] });
+
   return (
-    <SafeAreaView style={container}>
-      <NavBar />
-      <Text style={text}>Authentication</Text>
+    <SafeAreaView style={[container, { justifyContent: "center" }]}>
+      <Text style={[text, { textAlign: "center" }]}>
+        Sign in to get started
+      </Text>
+
+      <TouchableOpacity onPress={ongooglesignin} style={styles.pressable}>
+        <Image source={googleimg} style={styles.providerimg} />
+        <Text style={text}>Sign in with Google</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={onfbsignin}
+        style={[styles.pressable, { backgroundColor: colors.fbblue }]}
+      >
+        <Image source={fbimg} style={styles.providerimg} />
+        <Text style={text}>Sign in with Facebook</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  pressablectr: {},
+  pressable: {
+    marginVertical: 16,
+    marginHorizontal: 16,
+    padding: 8,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    borderRadius: 8,
+    backgroundColor: colors.accentlight,
+  },
+  providerimg: {
+    width: 26,
+    height: 26,
+    resizeMode: "contain",
+  },
+});
 
 export default Authentication;
