@@ -25,7 +25,7 @@ export const PreviewCtr = () => {
 
   return (
     <Pressable onPress={gotodetail} style={styles.container}>
-      <Text style={[text, { fontSize: 18 }]}>
+      <Text style={[text, { textTransform: "lowercase" }]}>
         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vero,
         repellendus...
       </Text>
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     width: devwidth / 2 - 12,
     height: devheight / 5 - 12,
     marginBottom: 8,
-    marginRight: 8,
+    marginHorizontal: 3,
     padding: 8,
     justifyContent: "space-between",
     borderRadius: 8,
