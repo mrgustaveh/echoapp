@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   View,
   Text,
@@ -6,7 +7,10 @@ import {
   StyleSheet,
   Pressable,
 } from "react-native";
+import * as MediaLibrary from "expo-media-library";
 import { useNavigation } from "@react-navigation/native";
+import { usealert } from "../../context/alertctx";
+import { downloadmedia } from "../../utils/downloadutil";
 import { PlayIcon, DownloadIcon } from "../../assets/icons/icons";
 import { text } from "../../constants/styles";
 import { colors } from "../../constants/colors";
@@ -14,14 +18,43 @@ import { colors } from "../../constants/colors";
 const devwidth = Dimensions.get("window").width;
 const devheight = Dimensions.get("window").height;
 
-export const PreviewCtr = ({ promptUid, description, audioUrl }) => {
+export const PreviewCtr = ({ promptUid, description, audioUrl, title }) => {
   const navigation = useNavigation();
+
+  const [hasPermission, setHasPermission] = useState(false);
+
+  const { setisvible, setisloading, setissuccess } = usealert();
 
   const gotodetail = () => navigation.navigate("detail", { id: promptUid });
 
   const playaudio = () => alert("playing audio at" + audioUrl);
 
-  const ondownload = () => alert("download started" + audioUrl);
+  const requestmediapermission = async () => {
+    const res = await MediaLibrary.requestPermissionsAsync();
+
+    if (res.status === "granted") setHasPermission(true);
+  };
+
+  const ondownload = () => {
+    if (hasPermission)
+      downloadmedia({ URL: audioUrl, title: title })
+        .then(() => {
+          setisvible(true);
+          setisloading(true);
+        })
+        .catch(() => {
+          setisloading(false);
+          setissuccess(false);
+        })
+        .finally(() => {
+          setTimeout(() => {
+            setisvible(false);
+            setisloading(false);
+            setissuccess(false);
+          }, 3500);
+        });
+    else requestmediapermission();
+  };
 
   return (
     <Pressable onPress={gotodetail} style={styles.container}>
