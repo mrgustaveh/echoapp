@@ -14,20 +14,21 @@ import { colors } from "../../constants/colors";
 const devwidth = Dimensions.get("window").width;
 const devheight = Dimensions.get("window").height;
 
-export const PreviewCtr = () => {
+export const PreviewCtr = ({ promptUid, description, audioUrl }) => {
   const navigation = useNavigation();
 
-  const gotodetail = () => navigation.navigate("detail");
+  const gotodetail = () => navigation.navigate("detail", { id: promptUid });
 
-  const playaudio = () => alert("playing audio");
+  const playaudio = () => alert("playing audio at" + audioUrl);
 
-  const ondownload = () => alert("download started");
+  const ondownload = () => alert("download started" + audioUrl);
 
   return (
     <Pressable onPress={gotodetail} style={styles.container}>
-      <Text style={[text, { textTransform: "lowercase" }]}>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vero,
-        repellendus...
+      <Text
+        style={[text, { textAlign: "justify", textTransform: "lowercase" }]}
+      >
+        {String(description).substring(0, 80)}...
       </Text>
 
       <View style={styles.actions}>
