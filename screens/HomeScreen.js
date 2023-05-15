@@ -29,7 +29,7 @@ const HomeScreen = () => {
     if (isok) {
       setisloading(false);
       setissuccess(true);
-      console.log(prompts[0]?.audio);
+
       setmyprompts(prompts);
 
       setTimeout(() => {
