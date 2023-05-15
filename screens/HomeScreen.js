@@ -1,19 +1,45 @@
+import { useEffect, useState } from "react";
 import { FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import AntDeisgnIcon from "react-native-vector-icons/AntDesign";
+import { getmyprompts } from "../utils/api/prompts";
+import { useAuth } from "../context/authctxt";
+import { usealert } from "../context/alertctx";
 import { NavBar } from "../components/NavBar";
-import { container, title } from "../constants/styles";
+import { container } from "../constants/styles";
 import { BottomBtn } from "../components/buttons/BottomBtn";
 import { PreviewCtr } from "../components/home/PreviewCtr";
 import { colors } from "../constants/colors";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
+  const [myprompts, setmyprompts] = useState([]);
+  const { idToken } = useAuth();
+  const { setisvible, setisloading, setissuccess } = usealert();
+
+  const onfetchprompts = async () => {
+    const { isok, prompts } = await getmyprompts({ idtoken: idToken });
+    setisvible(true);
+    setisloading(true);
+
+    if (isok) {
+      setisloading(false);
+      setissuccess(true);
+      console.log(prompts[0]?.audio);
+      setmyprompts(prompts);
+
+      setTimeout(() => {
+        setisvible(false);
+      }, 3500);
+    }
+  };
+
+  useEffect(() => {
+    onfetchprompts();
+  }, []);
 
   const gotocreate = () => navigation.navigate("create");
-
-  const data = [1, 2, 3, 4, 5];
 
   return (
     <SafeAreaView style={container}>
@@ -21,11 +47,17 @@ const HomeScreen = () => {
 
       <FlatList
         style={{ alignSelf: "stretch", paddingHorizontal: 7 }}
-        data={data}
-        keyExtractor={(item) => item}
+        data={myprompts}
+        keyExtractor={(item) => item?.promptUid}
         showsVerticalScrollIndicator={false}
         numColumns={2}
-        renderItem={({ item }) => <PreviewCtr />}
+        renderItem={({ item }) => (
+          <PreviewCtr
+            promptUid={item?.promptUid}
+            description={item?.prompt}
+            audioUrl={item?.audio[0]?.audio?.audio}
+          />
+        )}
       />
 
       <BottomBtn
