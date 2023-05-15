@@ -4,7 +4,6 @@ import { auth } from "../firebase/config";
 
 const authcontext = createContext({
   authenticated: false,
-  setauthenticated: () => {},
   idToken: "",
   userUid: "",
   setUserUid: () => {},
