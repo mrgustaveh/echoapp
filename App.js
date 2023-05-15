@@ -4,7 +4,7 @@ import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createaccount, getuser } from "./utils/api/auth";
 import { AuthProvider, useAuth } from "./context/authctxt";
 import { AlertProvider, usealert } from "./context/alertctx";
@@ -24,7 +24,7 @@ function App() {
   const [accountchecked, setaccountchecked] = useState(false);
 
   useEffect(() => {
-    AsyncStorage.getItem("prevauth").then((res) => {
+    /*AsyncStorage.getItem("prevauth").then((res) => {
       const data = JSON.parse(res);
 
       if (data?.prevauth) {
@@ -34,7 +34,8 @@ function App() {
         setisvible(false);
       }
     });
-    // console.log(idToken);
+    */
+
     if (authenticated && idToken !== "") {
       getuser({ idtoken: idToken })
         .then(async (res) => {
