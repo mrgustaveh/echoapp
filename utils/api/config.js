@@ -1,4 +1,4 @@
-export const BASE_URL = "http://127.0.0.1:8000/";
+export const BASE_URL = "https://b694-154-159-237-126.ngrok-free.app/";
 
 export const authurls = {
   me: "account/me/",
