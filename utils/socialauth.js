@@ -8,7 +8,6 @@ import {
   FacebookAuthProvider,
   signInWithCredential,
 } from "firebase/auth";
-import { ALERT_TYPE, Toast } from "react-native-alert-notification";
 import { auth } from "../firebase/config";
 
 WebBrowser.maybeCompleteAuthSession();
@@ -26,11 +25,7 @@ export const useGoogleAuth = () => {
       const { id_token } = response?.params;
 
       if (!id_token) {
-        Toast.show({
-          type: ALERT_TYPE.WARNING,
-          title: "sign in error",
-          textBody: "an unexepected error occurred, please try again",
-        });
+        alert("sign in error, please try again");
       }
 
       const credential = GoogleAuthProvider.credential(id_token);
@@ -52,10 +47,7 @@ export const useFbAuth = () => {
       const { access_token } = response?.params;
 
       if (!access_token) {
-        ToastAndroid.show(
-          "An unexpected error ocurred, try again",
-          ToastAndroid.LONG
-        );
+        alert("sign in error, please try again");
       }
 
       const provider = new FacebookAuthProvider();
