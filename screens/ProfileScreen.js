@@ -4,27 +4,31 @@ import { useNavigation } from "@react-navigation/native";
 import { BottomBtn } from "../components/buttons/BottomBtn";
 import EntypoIcon from "react-native-vector-icons/Entypo";
 import { Subscriptions } from "../components/profile/Subscriptions";
+import { auth } from "../firebase/config";
 import { container, subtitle, text, title } from "../constants/styles";
 import { colors } from "../constants/colors";
-
-const image = require("../assets/splash.png");
 
 function ProfileScreen() {
   const navigation = useNavigation();
 
   const goback = () => navigation.goBack();
 
+  const onsignout = async () => await auth.signOut();
+
   return (
     <SafeAreaView style={container}>
       <View style={styles.me}>
-        <Image source={image} style={styles.image} />
-        <Text style={text}>Antony Mburu ( a_sterisk* )</Text>
-        <Text style={subtitle}>antonymburu563@gmail.com</Text>
+        <Image
+          source={{ uri: auth?.currentUser?.photoURL }}
+          style={styles.image}
+        />
+        <Text style={text}>{auth?.currentUser?.displayName}</Text>
+        <Text style={subtitle}>{auth?.currentUser?.email}</Text>
       </View>
 
       <Subscriptions currplan="basic" />
 
-      <Pressable>
+      <Pressable onPress={onsignout}>
         <Text style={[title, styles.logout]}>Log Out</Text>
       </Pressable>
 
