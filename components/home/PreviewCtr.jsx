@@ -8,7 +8,9 @@ import {
   Pressable,
 } from "react-native";
 import * as MediaLibrary from "expo-media-library";
+import { Audio } from "expo-av";
 import { useNavigation } from "@react-navigation/native";
+import Lottie from "lottie-react-native";
 import { usealert } from "../../context/alertctx";
 import { downloadmedia } from "../../utils/downloadutil";
 import { PlayIcon, DownloadIcon } from "../../assets/icons/icons";
@@ -22,12 +24,11 @@ export const PreviewCtr = ({ promptUid, description, audioUrl, title }) => {
   const navigation = useNavigation();
 
   const [hasPermission, setHasPermission] = useState(false);
+  const [isplaying, setisplaying] = useState(false);
 
   const { setisvible, setisloading, setissuccess } = usealert();
 
   const gotodetail = () => navigation.navigate("detail", { id: promptUid });
-
-  const playaudio = () => alert("playing audio at" + audioUrl);
 
   const requestmediapermission = async () => {
     const res = await MediaLibrary.requestPermissionsAsync();
@@ -56,6 +57,28 @@ export const PreviewCtr = ({ promptUid, description, audioUrl, title }) => {
     else requestmediapermission();
   };
 
+  const AudioPlaybackStatusUpdate = (playbackStatus) => {
+    if (playbackStatus.isPlaying) {
+      setisplaying(true);
+    } else {
+      setisplaying(false);
+    }
+
+    if (playbackStatus.didJustFinish) {
+      setisplaying(false);
+    }
+  };
+
+  const playaudio = async () => {
+    const { sound } = await Audio.Sound.createAsync(
+      { uri: audioUrl },
+      { shouldPlay: true }
+    );
+
+    await sound.playAsync();
+    sound.setOnPlaybackStatusUpdate(AudioPlaybackStatusUpdate);
+  };
+
   return (
     <Pressable onPress={gotodetail} style={styles.container}>
       <Text
@@ -65,9 +88,17 @@ export const PreviewCtr = ({ promptUid, description, audioUrl, title }) => {
       </Text>
 
       <View style={styles.actions}>
-        <TouchableOpacity style={styles.playpause} onPress={playaudio}>
-          <PlayIcon />
-        </TouchableOpacity>
+        {isplaying ? (
+          <Lottie
+            source={require("../../assets/animations/wave.json")}
+            autoPlay
+            loop
+          />
+        ) : (
+          <TouchableOpacity style={styles.playpause} onPress={playaudio}>
+            <PlayIcon />
+          </TouchableOpacity>
+        )}
 
         <TouchableOpacity onPress={ondownload}>
           <DownloadIcon />
