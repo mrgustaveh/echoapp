@@ -67,6 +67,7 @@ const HomeScreen = () => {
             promptUid={item?.promptUid}
             description={item?.prompt}
             audioUrl={item?.audio[0]?.audio?.audio}
+            title={item?.title}
           />
         )}
         refreshControl={
