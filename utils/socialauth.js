@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 import * as Facebook from "expo-auth-session/providers/facebook";
-import { ResponseType } from "expo-auth-session";
+import { ResponseType, makeRedirectUri } from "expo-auth-session";
 import {
   GoogleAuthProvider,
   FacebookAuthProvider,
@@ -13,7 +13,7 @@ import { auth } from "../firebase/config";
 WebBrowser.maybeCompleteAuthSession();
 
 export const useGoogleAuth = () => {
-  const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
+  const [request, response, promptAsync] = Google.useAuthRequest({
     expoClientId:
       "1064311130616-qst1kaotovmlrv5a0mae5d98o2a9bip1.apps.googleusercontent.com",
     androidClientId:
