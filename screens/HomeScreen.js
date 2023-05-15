@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { FlatList } from "react-native";
+import { useCallback, useEffect, useState } from "react";
+import { FlatList, RefreshControl } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import AntDeisgnIcon from "react-native-vector-icons/AntDesign";
@@ -14,7 +14,10 @@ import { colors } from "../constants/colors";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
+
   const [myprompts, setmyprompts] = useState([]);
+  const [isrfreshing, setisrefreshing] = useState(false);
+
   const { idToken } = useAuth();
   const { setisvible, setisloading, setissuccess } = usealert();
 
@@ -34,6 +37,14 @@ const HomeScreen = () => {
       }, 3500);
     }
   };
+
+  const onRefresh = useCallback(() => {
+    setisrefreshing(true);
+
+    onfetchprompts();
+
+    setisrefreshing(false);
+  }, []);
 
   useEffect(() => {
     onfetchprompts();
@@ -58,6 +69,16 @@ const HomeScreen = () => {
             audioUrl={item?.audio[0]?.audio?.audio}
           />
         )}
+        refreshControl={
+          myprompts.length !== 0 && (
+            <RefreshControl
+              refreshing={isrfreshing}
+              onRefresh={onRefresh}
+              colors={[colors.accent, colors.accentlight]}
+              progressBackgroundColor={colors.primary}
+            />
+          )
+        }
       />
 
       <BottomBtn
