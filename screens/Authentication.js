@@ -1,6 +1,8 @@
 import { StyleSheet, TouchableOpacity, Image, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useGoogleAuth, useFbAuth } from "../utils/socialauth";
+import { usealert } from "../context/alertctx";
 import { container, text } from "../constants/styles";
 import { colors } from "../constants/colors";
 
@@ -8,13 +10,64 @@ const googleimg = require("../assets/img/google.png");
 const fbimg = require("../assets/img/fb.png");
 
 function Authentication() {
-  const navigation = useNavigation();
+  const { signInWithGoogle } = useGoogleAuth();
+  const { signInWithFb } = useFbAuth();
+  const { setisvible, setisloading, setissuccess } = usealert();
 
-  const ongooglesignin = () =>
-    navigation.reset({ index: 1, routes: [{ name: "home" }] });
+  const setprevauth = () =>
+    AsyncStorage.setItem("prevauth", JSON.stringify({ prevauth: true }));
 
-  const onfbsignin = () =>
-    navigation.reset({ index: 1, routes: [{ name: "home" }] });
+  const ongooglesignin = () => {
+    signInWithGoogle()
+      .then((res) => {
+        setisvible(true);
+        setisloading(true);
+
+        if (res?.type === "success") {
+          setisloading(false);
+          setissuccess(true);
+        }
+
+        setprevauth();
+      })
+      .catch(() => {
+        setisvible(true);
+        setisloading(false);
+        setissuccess(false);
+      })
+      .finally(() => {
+        setTimeout(() => {
+          setisvible(false);
+        }, 3500);
+      });
+  };
+
+  const onfbsignin = async () => {
+    signInWithFb()
+      .then(() => {
+        setisvible(true);
+        setisloading(true);
+
+        if (res?.type === "success") {
+          setisloading(false);
+          setissuccess(true);
+        }
+
+        setprevauth();
+      })
+      .catch(() => {
+        setisvible(true);
+        setisloading(false);
+        setissuccess(false);
+      })
+      .finally(() => {
+        setTimeout(() => {
+          setisvible(false);
+        }, 3500);
+      });
+
+    setisvible(false);
+  };
 
   return (
     <SafeAreaView style={[container, { justifyContent: "center" }]}>
