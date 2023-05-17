@@ -1,12 +1,42 @@
+import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useAuth } from "../context/authctxt";
+import { usealert } from "../context/alertctx";
+import { getprompt } from "../utils/api/prompts";
 import { NavBar } from "../components/NavBar";
 import { BottomBtn } from "../components/buttons/BottomBtn";
 import { Player } from "../components/detail/Player";
 import { TrashIcon, CalendarIcon } from "../assets/icons/icons";
 import { container, subtitle, text } from "../constants/styles";
 
-const DetailScreen = () => {
+const DetailScreen = ({ route, navigation }) => {
+  const [prompt, setprompt] = useState({});
+
+  const { promptID } = route?.params;
+
+  const { idToken } = useAuth();
+  const { setisvible, setisloading } = usealert();
+
+  const ongetpropmt = async () => {
+    setisvible(true);
+    setisloading(true);
+
+    const { isok, prompt } = await getprompt({
+      idtoken: idToken,
+      promptuid: promptID,
+    });
+
+    if (isok) {
+      setprompt(prompt);
+      setisvible(false);
+    }
+  };
+
+  useEffect(() => {
+    ongetpropmt();
+  }, [promptID]);
+
   return (
     <SafeAreaView style={container}>
       <NavBar />
@@ -19,27 +49,22 @@ const DetailScreen = () => {
               { textTransform: "capitalize", fontWeight: "500" },
             ]}
           >
-            ATITLE
+            {prompt?.title}
           </Text>
 
           <View style={styles.date}>
             <CalendarIcon />
             <Text style={[subtitle, { marginLeft: 8, fontWeight: "500" }]}>
-              2 days ago
+              {new Date(prompt?.created).toLocaleDateString()}
             </Text>
           </View>
         </View>
 
         <Text style={[text, { textAlign: "justify", marginBottom: 64 }]}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur
-          repudiandae, fugit vitae ad incidunt nihil nisi. Eos molestiae ea fuga
-          deleniti. Quibusdam a unde explicabo quia dolores possimus culpa? Nam
-          facilis quasi impedit animi rem harum itaque blanditiis, pariatur,
-          repudiandae dolores sit eos explicabo autem fugiat deserunt veritatis
-          adipisci accusamus.
+          {prompt?.prompt}
         </Text>
 
-        <Player />
+        <Player audURL={prompt?.audio[0]?.audio?.audio} title={prompt?.title} />
       </View>
 
       <BottomBtn title="delete" icon={<TrashIcon />} onclick={() => {}} />
