@@ -1,19 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
-  View,
-  Text,
+  StyleSheet,
   Dimensions,
   TouchableOpacity,
-  StyleSheet,
   Pressable,
+  View,
+  Text,
 } from "react-native";
 import * as MediaLibrary from "expo-media-library";
 import { Audio } from "expo-av";
 import { useNavigation } from "@react-navigation/native";
 import Lottie from "lottie-react-native";
-import { usealert } from "../../context/alertctx";
+import { usenotification } from "../../context/notificationctx";
 import { downloadmedia } from "../../utils/downloadutil";
-import { PlayIcon, DownloadIcon } from "../../assets/icons/icons";
+import { PlayIcon, DownloadIcon, PauseIcon } from "../../assets/icons/icons";
 import { text } from "../../constants/styles";
 import { colors } from "../../constants/colors";
 
@@ -24,11 +24,19 @@ export const PreviewCtr = ({ promptUid, description, audioUrl, title }) => {
   const navigation = useNavigation();
 
   const [hasPermission, setHasPermission] = useState(false);
+  const [Sound, setSound] = useState();
   const [isplaying, setisplaying] = useState(false);
 
-  const { setisvible, setisloading, setissuccess } = usealert();
+  const {
+    setshownotification,
+    setnotifiIsloading,
+    setissuccess,
+    setnotificationtitle,
+    setnotificationtext,
+  } = usenotification();
 
-  const gotodetail = () => navigation.navigate("detail", { id: promptUid });
+  const gotodetail = () =>
+    navigation.navigate("detail", { promptID: promptUid });
 
   const requestmediapermission = async () => {
     const res = await MediaLibrary.requestPermissionsAsync();
@@ -39,22 +47,49 @@ export const PreviewCtr = ({ promptUid, description, audioUrl, title }) => {
   const ondownload = () => {
     if (hasPermission)
       downloadmedia({ URL: audioUrl, title: title })
-        .then(() => {
-          setisvible(true);
-          setisloading(true);
+        .then((res) => {
+          setshownotification(true);
+          setnotifiIsloading(true);
+          setnotificationtitle("downloading");
+          setnotificationtext(
+            `downloading file - ${String(title).substring(0, 5)}...mp3`
+          );
+
+          setTimeout(() => {
+            if (res?.filesaved) {
+              setshownotification(true);
+              setnotifiIsloading(false);
+              setissuccess(true);
+              setnotificationtitle("download complete");
+              setnotificationtext(
+                `${String(title).substring(0, 5)}...mp3 downloaded successfully`
+              );
+            }
+          }, 1500);
         })
         .catch(() => {
-          setisloading(false);
+          setnotifiIsloading(false);
           setissuccess(false);
+          setnotificationtitle("downloading");
+          setnotificationtext(`unable to download file - ${title}.mp3`);
         })
         .finally(() => {
           setTimeout(() => {
-            setisvible(false);
-            setisloading(false);
+            setshownotification(false);
+            setnotifiIsloading(false);
             setissuccess(false);
-          }, 3500);
+            setnotificationtitle("");
+            setnotificationtext("");
+          }, 4500);
         });
-    else requestmediapermission();
+    else {
+      setshownotification(true);
+      setissuccess(false);
+      setnotificationtitle("permission needed");
+      setnotificationtext("allow media access");
+
+      requestmediapermission();
+    }
   };
 
   const AudioPlaybackStatusUpdate = (playbackStatus) => {
@@ -76,8 +111,19 @@ export const PreviewCtr = ({ promptUid, description, audioUrl, title }) => {
     );
 
     await sound.playAsync();
+    setSound(sound);
     sound.setOnPlaybackStatusUpdate(AudioPlaybackStatusUpdate);
   };
+
+  const pauseaudio = () => Sound.pauseAsync();
+
+  useEffect(() => {
+    return Sound
+      ? () => {
+          Sound.unloadAsync();
+        }
+      : undefined;
+  }, [Sound]);
 
   return (
     <Pressable onPress={gotodetail} style={styles.container}>
@@ -88,21 +134,24 @@ export const PreviewCtr = ({ promptUid, description, audioUrl, title }) => {
       </Text>
 
       <View style={styles.actions}>
-        {isplaying ? (
+        <TouchableOpacity
+          style={styles.playpause}
+          onPress={isplaying ? pauseaudio : playaudio}
+        >
+          {isplaying ? <PauseIcon /> : <PlayIcon />}
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={ondownload}>
+          <DownloadIcon />
+        </TouchableOpacity>
+
+        {isplaying && (
           <Lottie
             source={require("../../assets/animations/wave.json")}
             autoPlay
             loop
           />
-        ) : (
-          <TouchableOpacity style={styles.playpause} onPress={playaudio}>
-            <PlayIcon />
-          </TouchableOpacity>
         )}
-
-        <TouchableOpacity onPress={ondownload}>
-          <DownloadIcon />
-        </TouchableOpacity>
       </View>
     </Pressable>
   );
@@ -120,10 +169,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.accentlight,
   },
   actions: {
+    width: "100%",
     flexDirection: "row",
     alignItems: "flex-start",
+    justifyContent: "space-between",
   },
   playpause: {
-    marginRight: 16,
+    // marginRight: 16,
   },
 });
