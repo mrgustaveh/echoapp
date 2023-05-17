@@ -4,11 +4,17 @@ import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { Audio, InterruptionModeIOS, InterruptionModeAndroid } from "expo-av";
 // import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createaccount, getuser } from "./utils/api/auth";
 import { AuthProvider, useAuth } from "./context/authctxt";
 import { AlertProvider, usealert } from "./context/alertctx";
+import {
+  NotificationProvider,
+  usenotification,
+} from "./context/notificationctx";
 import { AppAlert } from "./components/global/AppAlerts";
+import { Notification } from "./components/global/Notification";
 import Authentication from "./screens/Authentication";
 import HomeScreen from "./screens/HomeScreen";
 import SearchScreen from "./screens/SearchScreen";
@@ -21,6 +27,8 @@ const Stack = createNativeStackNavigator();
 function App() {
   const { setisvible, isvisible, setisloading, setissuccess } = usealert();
   const { authenticated, idToken, setUserUid } = useAuth();
+  const { shownotification } = usenotification();
+
   const [accountchecked, setaccountchecked] = useState(false);
 
   useEffect(() => {
@@ -60,6 +68,18 @@ function App() {
     }
   }, [authenticated, idToken]);
 
+  useEffect(() => {
+    Audio.setAudioModeAsync({
+      allowsRecordingIOS: false,
+      staysActiveInBackground: true,
+      interruptionModeIOS: InterruptionModeIOS.DoNotMix,
+      playsInSilentModeIOS: true,
+      shouldDuckAndroid: true,
+      interruptionModeAndroid: InterruptionModeAndroid.DoNotMix,
+      playThroughEarpieceAndroid: false,
+    });
+  }, []);
+
   return (
     <SafeAreaProvider>
       <NavigationContainer>
@@ -90,6 +110,7 @@ function App() {
           backgroundColor="transparent"
         />
         {isvisible && <AppAlert />}
+        {shownotification && <Notification />}
       </NavigationContainer>
     </SafeAreaProvider>
   );
@@ -99,7 +120,9 @@ export default function AppProvider() {
   return (
     <AuthProvider>
       <AlertProvider>
-        <App />
+        <NotificationProvider>
+          <App />
+        </NotificationProvider>
       </AlertProvider>
     </AuthProvider>
   );
