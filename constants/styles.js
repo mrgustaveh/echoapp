@@ -6,20 +6,23 @@ export const container = {
 };
 
 export const text = {
-  fontSize: 16,
+  fontSize: 12,
   fontWeight: "500",
+  fontFamily: "open-sans-regular",
   color: colors.text,
 };
 
 export const subtitle = {
-  fontSize: 18,
+  fontSize: 14,
   fontWeight: "600",
+  fontFamily: "open-sans-bold",
   color: colors.text,
 };
 
 export const title = {
-  fontSize: 20,
+  fontSize: 28,
   fontWeight: "700",
+  fontFamily: "open-sans-bold",
   color: colors.text,
 };
 
