@@ -8,7 +8,6 @@ export const Divider = ({ style }) => {
 const styles = StyleSheet.create({
   container: {
     borderWidth: 1,
-    borderRadius: 1,
-    borderColor: "rgba(25, 30, 35, 0.7)",
+    borderColor: colors.accent,
   },
 });
