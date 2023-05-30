@@ -40,7 +40,7 @@ const CreateAudioScreen = () => {
         <Divider style={styles.divider} />
 
         <Text style={styles.charcount}>
-          {audiocontent.length} / 1024 characters
+          {audiocontent.length} of 1024 characters
         </Text>
       </View>
 
@@ -67,13 +67,14 @@ const styles = StyleSheet.create({
   },
   contentctr: {
     marginTop: 16,
-    padding: 8,
+    paddingVertical: 8,
     marginHorizontal: 8,
     borderRadius: 6,
     backgroundColor: colors.accentlight,
   },
   contentinput: {
     ...text,
+    padding: 8,
     height: 150,
     textAlignVertical: "top",
   },
@@ -83,6 +84,7 @@ const styles = StyleSheet.create({
   },
   charcount: {
     ...text,
+    paddingHorizontal: 8,
     textAlign: "right",
   },
   voicesctr: {
