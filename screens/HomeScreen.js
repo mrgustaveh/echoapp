@@ -11,6 +11,7 @@ import { container } from "../constants/styles";
 import { BottomBtn } from "../components/buttons/BottomBtn";
 import { PreviewCtr } from "../components/home/PreviewCtr";
 import { colors } from "../constants/colors";
+import { Player } from "../components/Player";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -82,9 +83,11 @@ const HomeScreen = () => {
         }
       />
 
+      <Player />
+
       <BottomBtn
         title="create"
-        icon={<AntDeisgnIcon name="plus" color={colors.text} size={22} />}
+        icon={<AntDeisgnIcon name="plus" color={colors.text} size={16} />}
         onclick={gotocreate}
       />
     </SafeAreaView>
