@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: 8,
-    borderRadius: 8,
+    borderRadius: 6,
     backgroundColor: colors.accentlight,
   },
   providerimg: {
