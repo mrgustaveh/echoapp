@@ -1,11 +1,13 @@
 import "expo-dev-client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useFonts } from "expo-font";
+import * as ExpoSplashScreen from "expo-splash-screen";
 import { Audio, InterruptionModeIOS, InterruptionModeAndroid } from "expo-av";
-// import AsyncStorage from "@react-native-async-storage/async-storage";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { createaccount, getuser } from "./utils/api/auth";
 import { AuthProvider, useAuth } from "./context/authctxt";
 import { AlertProvider, usealert } from "./context/alertctx";
@@ -13,8 +15,10 @@ import {
   NotificationProvider,
   usenotification,
 } from "./context/notificationctx";
+import { PlayerProvider } from "./context/playerctx";
 import { AppAlert } from "./components/global/AppAlerts";
 import { Notification } from "./components/global/Notification";
+import { Player } from "./components/Player";
 import Authentication from "./screens/Authentication";
 import HomeScreen from "./screens/HomeScreen";
 import SearchScreen from "./screens/SearchScreen";
@@ -23,6 +27,7 @@ import DetailScreen from "./screens/DetailScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 
 const Stack = createNativeStackNavigator();
+ExpoSplashScreen.preventAutoHideAsync();
 
 function App() {
   const { setisvible, isvisible, setisloading, setissuccess } = usealert();
@@ -32,18 +37,6 @@ function App() {
   const [accountchecked, setaccountchecked] = useState(false);
 
   useEffect(() => {
-    /*AsyncStorage.getItem("prevauth").then((res) => {
-      const data = JSON.parse(res);
-
-      if (data?.prevauth) {
-        setisvible(true);
-        setisloading(true);
-      } else {
-        setisvible(false);
-      }
-    });
-    */
-
     if (authenticated && idToken !== "") {
       getuser({ idtoken: idToken })
         .then(async (res) => {
@@ -80,38 +73,59 @@ function App() {
     });
   }, []);
 
+  const [fontsLoaded] = useFonts({
+    "open-sans-regular": require("./assets/font/OpenSans-Regular.ttf"),
+    "open-sans-bold": require("./assets/font/OpenSans-SemiBold.ttf"),
+  });
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await ExpoSplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
-    <SafeAreaProvider>
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-            animation: "fade",
-            animationTypeForReplace: "push",
-          }}
-        >
-          {authenticated && idToken !== "" && accountchecked ? (
-            <>
-              <Stack.Screen name="home" component={HomeScreen} />
-              <Stack.Screen name="search" component={SearchScreen} />
-              <Stack.Screen name="create" component={CreateAudioScreen} />
-              <Stack.Screen name="detail" component={DetailScreen} />
-              <Stack.Screen name="profile" component={ProfileScreen} />
-            </>
-          ) : (
-            <>
-              <Stack.Screen name="authentication" component={Authentication} />
-            </>
-          )}
-        </Stack.Navigator>
-        <StatusBar
-          style="light"
-          animated={true}
-          backgroundColor="transparent"
-        />
-        {isvisible && <AppAlert />}
-        {shownotification && <Notification />}
-      </NavigationContainer>
+    <SafeAreaProvider onLayout={onLayoutRootView}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: false,
+              animation: "fade",
+              animationTypeForReplace: "push",
+            }}
+          >
+            {authenticated && idToken !== "" && accountchecked ? (
+              <>
+                <Stack.Screen name="home" component={HomeScreen} />
+                <Stack.Screen name="search" component={SearchScreen} />
+                <Stack.Screen name="create" component={CreateAudioScreen} />
+                <Stack.Screen name="detail" component={DetailScreen} />
+                <Stack.Screen name="profile" component={ProfileScreen} />
+              </>
+            ) : (
+              <>
+                <Stack.Screen
+                  name="authentication"
+                  component={Authentication}
+                />
+              </>
+            )}
+          </Stack.Navigator>
+          <StatusBar
+            style="light"
+            animated={true}
+            backgroundColor="transparent"
+          />
+          {isvisible && <AppAlert />}
+          {shownotification && <Notification />}
+          <Player />
+        </NavigationContainer>
+      </GestureHandlerRootView>
     </SafeAreaProvider>
   );
 }
@@ -121,7 +135,9 @@ export default function AppProvider() {
     <AuthProvider>
       <AlertProvider>
         <NotificationProvider>
-          <App />
+          <PlayerProvider>
+            <App />
+          </PlayerProvider>
         </NotificationProvider>
       </AlertProvider>
     </AuthProvider>
