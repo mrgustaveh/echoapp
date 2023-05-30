@@ -17,7 +17,7 @@ export const SearchInput = () => {
         autoCorrect={false}
         value={searchtxt}
         onChangeText={(text) => setsearchtxt(text)}
-        placeholder="search my audio (by title or text)..."
+        placeholder="search my audio ( title or text ) ..."
         placeholderTextColor={textlight}
         style={styles.input}
       />
@@ -27,17 +27,17 @@ export const SearchInput = () => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 8,
+    padding: 6,
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: colors.accentlight,
-    borderRadius: 8,
+    borderRadius: 6,
     marginTop: 8,
     marginHorizontal: 8,
   },
   input: {
     ...text,
     marginLeft: 8,
-    maxWidth: "92%",
+    width: "92%",
   },
 });
