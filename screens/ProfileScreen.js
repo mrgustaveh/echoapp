@@ -5,7 +5,7 @@ import { BottomBtn } from "../components/buttons/BottomBtn";
 import EntypoIcon from "react-native-vector-icons/Entypo";
 import { Subscriptions } from "../components/profile/Subscriptions";
 import { auth } from "../firebase/config";
-import { container, subtitle, text, title } from "../constants/styles";
+import { container, subtitle, text } from "../constants/styles";
 import { colors } from "../constants/colors";
 
 function ProfileScreen() {
@@ -29,7 +29,7 @@ function ProfileScreen() {
       <Subscriptions currplan="basic" />
 
       <Pressable onPress={onsignout}>
-        <Text style={[title, styles.logout]}>Log Out</Text>
+        <Text style={[text, styles.logout]}>Log Out</Text>
       </Pressable>
 
       <BottomBtn
