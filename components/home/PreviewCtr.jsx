@@ -21,7 +21,7 @@ export const PreviewCtr = ({ promptUid, description, audioUrl, title }) => {
   const gotodetail = () =>
     navigation.navigate("detail", { promptID: promptUid });
 
-  const playaudio = async () => {
+  const playaudio = () => {
     setplyrisvisible(true);
     setaudtitle(title);
     setaudURL(audioUrl);
