@@ -115,6 +115,7 @@ export const Player = () => {
   const AudioPlaybackStatusUpdate = (playbackStatus) => {
     if (playbackStatus.isPlaying) {
       setisplaying(true);
+      setcurrpos(playbackStatus.positionMillis);
 
       const progress =
         (playbackStatus?.positionMillis / playbackStatus?.durationMillis) * 100;
@@ -137,10 +138,13 @@ export const Player = () => {
       { uri: audURL },
       { shouldPlay: true, isLooping: false },
       (status) => {
-        setcurrpos(status.positionMillis);
         sethasLoaded(status.isLoaded);
       }
     );
+
+    if (currpos !== 0) {
+      sound.playFromPositionAsync(currpos);
+    }
 
     if (sound._loaded) {
       await sound.playAsync();
