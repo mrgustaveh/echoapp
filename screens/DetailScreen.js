@@ -1,22 +1,49 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { formatDistance, format } from "date-fns";
+import { enGB } from "date-fns/locale";
 import { useAuth } from "../context/authctxt";
 import { usealert } from "../context/alertctx";
-import { getprompt } from "../utils/api/prompts";
+import { getprompt, destroyprompt } from "../utils/api/prompts";
 import { NavBar } from "../components/NavBar";
 import { BottomBtn } from "../components/buttons/BottomBtn";
-import { Player } from "../components/detail/Player";
+import { DetailPlayer } from "../components/detail/DetailPlayer";
+import {
+  FullwidthSkeleton,
+  TextSkeleton,
+} from "../components/global/Skeletons";
 import { TrashIcon, CalendarIcon } from "../assets/icons/icons";
 import { container, subtitle, text } from "../constants/styles";
 
 const DetailScreen = ({ route, navigation }) => {
-  const [prompt, setprompt] = useState({});
-
   const { promptID } = route?.params;
 
+  const [prompt, setprompt] = useState("");
+  const [audiotitle, setaudiotitle] = useState("");
+  const [audioUrl, setaudioUrl] = useState("");
+  const [timediff, settimediff] = useState("");
+  const [formatteddate, setformatteddate] = useState("");
+
   const { idToken } = useAuth();
-  const { setisvible, setisloading } = usealert();
+  const { setisvible, isvisible, setisloading } = usealert();
+
+  const getformateddate = (datestr) => {
+    const prevDate = new Date(datestr);
+
+    const formateddate = format(prevDate, "do MMM yyyy", { locale: enGB });
+    setformatteddate(formateddate);
+  };
+
+  const gettimediff = (datestr) => {
+    const currDate = new Date();
+    const prevDate = new Date(datestr);
+
+    const formatteddiff = formatDistance(prevDate, currDate, {
+      addSuffix: true,
+    });
+    settimediff(formatteddiff);
+  };
 
   const ongetpropmt = async () => {
     setisvible(true);
@@ -28,8 +55,28 @@ const DetailScreen = ({ route, navigation }) => {
     });
 
     if (isok) {
-      setprompt(prompt);
       setisvible(false);
+      setprompt(prompt?.prompt);
+      setaudiotitle(prompt?.title);
+      setaudioUrl(prompt?.audio[0]?.audio?.audio);
+      gettimediff(prompt?.created);
+      getformateddate(prompt?.created);
+    }
+  };
+
+  const ondeleteprompt = async () => {
+    setisvible(true);
+    setisloading(true);
+
+    const { isok } = await destroyprompt({
+      idtoken: idToken,
+      promptuid: promptID,
+    });
+
+    if (isok) {
+      setisvible(false);
+
+      navigation.navigate("home");
     }
   };
 
@@ -42,37 +89,47 @@ const DetailScreen = ({ route, navigation }) => {
       <NavBar />
 
       <View style={styles.detailctr}>
-        <View style={styles.title}>
-          <Text
-            style={[
-              subtitle,
-              { textTransform: "capitalize", fontWeight: "500" },
-            ]}
-          >
-            {prompt?.title}
-          </Text>
+        {isvisible ? (
+          <TextSkeleton />
+        ) : (
+          <Text style={[subtitle, { textAlign: "center" }]}>Text</Text>
+        )}
 
+        {isvisible ? (
+          <>
+            <TextSkeleton />
+            <TextSkeleton />
+          </>
+        ) : (
+          <Text style={[text, { textAlign: "justify", marginVertical: 8 }]}>
+            {prompt}
+          </Text>
+        )}
+
+        {isvisible ? (
+          <TextSkeleton />
+        ) : (
           <View style={styles.date}>
             <CalendarIcon />
-            <Text style={[subtitle, { marginLeft: 8, fontWeight: "500" }]}>
-              {new Date(prompt?.created).toLocaleDateString()}
-            </Text>
+            <Text style={styles.datetxt}>{formatteddate}</Text>
+            <Text style={styles.datetxt}>{timediff}</Text>
           </View>
-        </View>
+        )}
 
-        <Text style={[text, { textAlign: "justify", marginBottom: 64 }]}>
-          {prompt?.prompt}
-        </Text>
-
-        <Player audURL={prompt?.audio[0]?.audio?.audio} title={prompt?.title} />
+        {isvisible ? (
+          <FullwidthSkeleton />
+        ) : (
+          <DetailPlayer audURL={audioUrl} audTitle={audiotitle} />
+        )}
       </View>
 
-      <BottomBtn title="delete" icon={<TrashIcon />} onclick={() => {}} />
+      <BottomBtn title="delete" icon={<TrashIcon />} onclick={ondeleteprompt} />
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  detailctr: { paddingHorizontal: 8 },
   title: {
     flexDirection: "row",
     alignItems: "center",
@@ -80,10 +137,15 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   date: {
+    marginTop: 8,
+    marginBottom: 32,
     flexDirection: "row",
     alignItems: "center",
   },
-  detailctr: { paddingHorizontal: 8 },
+  datetxt: {
+    ...text,
+    marginLeft: 12,
+  },
 });
 
 export default DetailScreen;
