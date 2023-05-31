@@ -128,29 +128,29 @@ export const Player = () => {
     }
 
     if (playbackStatus.didJustFinish) {
+      animationref.current?.reset();
       setisplaying(false);
       setcurrpos(0);
-      animationref.current?.reset();
     }
   };
 
   const playaudio = async () => {
-    const { sound } = await Audio.Sound.createAsync(
-      { uri: audURL },
-      { shouldPlay: true, isLooping: false },
-      (status) => {
-        sethasLoaded(status.isLoaded);
+    if (currpos !== 0 && Sound._loaded) {
+      Sound.playFromPositionAsync(currpos);
+    } else {
+      const { sound } = await Audio.Sound.createAsync(
+        { uri: audURL },
+        { shouldPlay: true, isLooping: false },
+        (status) => {
+          sethasLoaded(status.isLoaded);
+        }
+      );
+
+      if (sound._loaded) {
+        await sound.playAsync();
+        setSound(sound);
+        sound.setOnPlaybackStatusUpdate(AudioPlaybackStatusUpdate);
       }
-    );
-
-    if (currpos !== 0) {
-      sound.playFromPositionAsync(currpos);
-    }
-
-    if (sound._loaded) {
-      await sound.playAsync();
-      setSound(sound);
-      sound.setOnPlaybackStatusUpdate(AudioPlaybackStatusUpdate);
     }
   };
 
@@ -201,12 +201,15 @@ export const Player = () => {
           Sound.unloadAsync();
         }
       : undefined;
-  }, [Sound]);
+  }, [Sound, audURL]);
 
   useEffect(() => {
     if (plyrisvisible) {
       scrollTo(0);
-      // playaudio();
+
+      if (hasLoaded) {
+        playaudio();
+      }
     } else {
       scrollTo(SCREEN_HEIGHT / 1.5);
     }
