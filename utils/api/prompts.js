@@ -60,6 +60,5 @@ export const destroyprompt = async ({ idtoken, promptuid }) => {
     body: null,
   });
 
-  const prompt = await res.json();
-  return { isok: res.ok, prompt };
+  return { isok: res.ok };
 };
