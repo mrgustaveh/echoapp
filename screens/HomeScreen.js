@@ -10,8 +10,8 @@ import { NavBar } from "../components/NavBar";
 import { container } from "../constants/styles";
 import { BottomBtn } from "../components/buttons/BottomBtn";
 import { PreviewCtr } from "../components/home/PreviewCtr";
+import { SquareSkeleton } from "../components/global/Skeletons";
 import { colors } from "../constants/colors";
-import { Player } from "../components/Player";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -20,7 +20,7 @@ const HomeScreen = () => {
   const [isrfreshing, setisrefreshing] = useState(false);
 
   const { idToken } = useAuth();
-  const { setisvible, setisloading, setissuccess } = usealert();
+  const { setisvible, isvisible, setisloading } = usealert();
 
   const onfetchprompts = async () => {
     const { isok, prompts } = await getmyprompts({ idtoken: idToken });
@@ -28,9 +28,6 @@ const HomeScreen = () => {
     setisloading(true);
 
     if (isok) {
-      setisloading(false);
-      setissuccess(true);
-
       setmyprompts(prompts);
 
       setTimeout(() => {
@@ -57,33 +54,42 @@ const HomeScreen = () => {
     <SafeAreaView style={container}>
       <NavBar screen="home" />
 
-      <FlatList
-        style={{ alignSelf: "stretch", paddingHorizontal: 7 }}
-        data={myprompts}
-        keyExtractor={(item) => item?.promptUid}
-        showsVerticalScrollIndicator={false}
-        numColumns={2}
-        renderItem={({ item }) => (
-          <PreviewCtr
-            promptUid={item?.promptUid}
-            description={item?.prompt}
-            audioUrl={item?.audio[0]?.audio?.audio}
-            title={item?.title}
-          />
-        )}
-        refreshControl={
-          myprompts.length !== 0 && (
-            <RefreshControl
-              refreshing={isrfreshing}
-              onRefresh={onRefresh}
-              colors={[colors.accent, colors.accentlight]}
-              progressBackgroundColor={colors.primary}
+      {isvisible ? (
+        <FlatList
+          style={{ alignSelf: "stretch", paddingHorizontal: 7 }}
+          data={[1, 2, 3]}
+          keyExtractor={(item) => item}
+          showsVerticalScrollIndicator={false}
+          numColumns={2}
+          renderItem={({ item }) => <SquareSkeleton />}
+        />
+      ) : (
+        <FlatList
+          style={{ alignSelf: "stretch", paddingHorizontal: 7 }}
+          data={myprompts}
+          keyExtractor={(item) => item?.promptUid}
+          showsVerticalScrollIndicator={false}
+          numColumns={2}
+          renderItem={({ item }) => (
+            <PreviewCtr
+              promptUid={item?.promptUid}
+              description={item?.prompt}
+              audioUrl={item?.audio[0]?.audio?.audio}
+              title={item?.title}
             />
-          )
-        }
-      />
-
-      <Player />
+          )}
+          refreshControl={
+            myprompts.length !== 0 && (
+              <RefreshControl
+                refreshing={isrfreshing}
+                onRefresh={onRefresh}
+                colors={[colors.accent, colors.accentlight]}
+                progressBackgroundColor={colors.primary}
+              />
+            )
+          }
+        />
+      )}
 
       <BottomBtn
         title="create"
