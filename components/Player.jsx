@@ -129,6 +129,7 @@ export const Player = () => {
 
     if (playbackStatus.didJustFinish) {
       setisplaying(false);
+      setcurrpos(0);
       animationref.current?.reset();
     }
   };
