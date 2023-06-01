@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from "react";
 import { FlatList, RefreshControl } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import AntDeisgnIcon from "react-native-vector-icons/AntDesign";
 import { getmyprompts } from "../utils/api/prompts";
 import { useAuth } from "../context/authctxt";
 import { usealert } from "../context/alertctx";
@@ -12,6 +11,7 @@ import { BottomBtn } from "../components/buttons/BottomBtn";
 import { PreviewCtr } from "../components/home/PreviewCtr";
 import { SquareSkeleton } from "../components/global/Skeletons";
 import { colors } from "../constants/colors";
+import { CreateIcon } from "../assets/icons/icons";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -91,11 +91,7 @@ const HomeScreen = () => {
         />
       )}
 
-      <BottomBtn
-        title="create"
-        icon={<AntDeisgnIcon name="plus" color={colors.text} size={16} />}
-        onclick={gotocreate}
-      />
+      <BottomBtn title="create" icon={<CreateIcon />} onclick={gotocreate} />
     </SafeAreaView>
   );
 };
