@@ -6,6 +6,7 @@ import { BottomBtn } from "../components/buttons/BottomBtn";
 import { CreateIcon } from "../assets/icons/icons";
 import { container, subtitle, text } from "../constants/styles";
 import { Divider } from "../components/global/Divider";
+import { VoicePreview } from "../components/create/VoicePreview";
 import { colors } from "../constants/colors";
 
 const CreateAudioScreen = () => {
@@ -72,6 +73,36 @@ const CreateAudioScreen = () => {
 
       <View style={styles.voicesctr}>
         <Text style={subtitle}>Select a voice to use</Text>
+
+        <View
+          style={{
+            flexDirection: "row",
+            gap: 8,
+            flexWrap: "wrap",
+            marginTop: 8,
+          }}
+        >
+          <VoicePreview />
+          <VoicePreview />
+          <VoicePreview />
+          <VoicePreview isactive />
+          <VoicePreview />
+        </View>
+        {/* <FlatList
+          style={{ alignSelf: "stretch", paddingHorizontal: 7 }}
+          data={myprompts}
+          keyExtractor={(item) => item?.promptUid}
+          showsVerticalScrollIndicator={false}
+          numColumns={2}
+          renderItem={({ item }) => (
+            <VoicePreview
+              voiceid={item?.promptUid}
+              description={item?.prompt}
+              audioUrl={item?.audio[0]?.audio?.audio}
+              isactive={{selectedidx === thisidx ? true : false}}
+            />
+          )}
+        />  */}
       </View>
 
       <BottomBtn
