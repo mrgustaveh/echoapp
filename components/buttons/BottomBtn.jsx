@@ -2,16 +2,28 @@ import { StyleSheet, TouchableOpacity, Text } from "react-native";
 import { subtitle } from "../../constants/styles";
 import { colors } from "../../constants/colors";
 
-export const BottomBtn = ({ title, icon, onclick, iconfirst }) => {
+export const BottomBtn = ({ title, icon, btnDisabled, onclick, iconfirst }) => {
   return (
     <TouchableOpacity
       style={[
         styles.container,
-        { flexDirection: iconfirst ? "row-reverse" : "row" },
+        {
+          flexDirection: iconfirst ? "row-reverse" : "row",
+          backgroundColor: btnDisabled ? colors.accentlight : colors.accent,
+        },
       ]}
+      disabled={btnDisabled}
       onPress={onclick}
     >
-      <Text style={[subtitle, styles.title]}>{title}</Text>
+      <Text
+        style={[
+          subtitle,
+          styles.title,
+          { color: btnDisabled ? colors.textlight : colors.text },
+        ]}
+      >
+        {title}
+      </Text>
       {icon}
     </TouchableOpacity>
   );
@@ -28,7 +40,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 4,
     borderRadius: 32,
-    backgroundColor: colors.accent,
   },
   title: {
     textTransform: "capitalize",
