@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { StyleSheet, TouchableOpacity, View, Text } from "react-native";
 import * as MediaLibrary from "expo-media-library";
 import { Audio } from "expo-av";
@@ -142,6 +142,14 @@ export const DetailPlayer = ({ audURL, audTitle }) => {
   const forward5 = () => {
     if (hasLoaded) Sound.setPositionAsync(currpos + 5 * 1000);
   };
+
+  useEffect(() => {
+    return Sound
+      ? () => {
+          Sound.unloadAsync();
+        }
+      : undefined;
+  }, [Sound]);
 
   return (
     <View style={styles.container}>
