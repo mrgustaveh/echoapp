@@ -1,10 +1,4 @@
-import {
-  StyleSheet,
-  Dimensions,
-  TouchableOpacity,
-  Pressable,
-  Text,
-} from "react-native";
+import { StyleSheet, Dimensions, TouchableOpacity, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useplayer } from "../../context/playerctx";
 import { PlayIcon } from "../../assets/icons/icons";
@@ -28,7 +22,7 @@ export const PreviewCtr = ({ promptUid, description, audioUrl, title }) => {
   };
 
   return (
-    <Pressable onPress={gotodetail} style={styles.container}>
+    <TouchableOpacity onPress={gotodetail} style={styles.container}>
       <Text
         style={[text, { textAlign: "justify", textTransform: "lowercase" }]}
       >
@@ -38,7 +32,7 @@ export const PreviewCtr = ({ promptUid, description, audioUrl, title }) => {
       <TouchableOpacity onPress={playaudio}>
         <PlayIcon />
       </TouchableOpacity>
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 
