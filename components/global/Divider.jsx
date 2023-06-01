@@ -7,7 +7,8 @@ export const Divider = ({ style }) => {
 
 const styles = StyleSheet.create({
   container: {
-    borderWidth: 1,
-    borderColor: colors.accent,
+    width: "100%",
+    height: 0.5,
+    backgroundColor: colors.accent,
   },
 });
