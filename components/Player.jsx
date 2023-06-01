@@ -184,6 +184,7 @@ export const Player = () => {
       if (translateYSharedValue.value > -SCREEN_HEIGHT / 14) {
         scrollTo(SCREEN_HEIGHT / 1.5);
         runOnJS(setplyrisvisible)(false);
+        runOnJS(pauseaudio);
       } else if (translateYSharedValue.value <= -SCREEN_HEIGHT / 14) {
         scrollTo(0);
       }
@@ -201,15 +202,13 @@ export const Player = () => {
           Sound.unloadAsync();
         }
       : undefined;
-  }, [Sound, audURL]);
+  }, [Sound, plyrisvisible]);
 
   useEffect(() => {
     if (plyrisvisible) {
       scrollTo(0);
 
-      if (hasLoaded) {
-        playaudio();
-      }
+      playaudio();
     } else {
       scrollTo(SCREEN_HEIGHT / 1.5);
     }
