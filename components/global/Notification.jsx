@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import Lottie from "lottie-react-native";
-import EVIcon from "react-native-vector-icons/EvilIcons";
 import { usenotification } from "../../context/notificationctx";
-import { text } from "../../constants/styles";
+import { CloseIcon } from "../../assets/icons/icons";
+import { subtitle, text } from "../../constants/styles";
 import { colors } from "../../constants/colors";
 
 export const Notification = () => {
@@ -27,8 +27,8 @@ export const Notification = () => {
   const onclosenotification = () => setshownotification(false);
 
   return (
-    <View style={styles.container}>
-      <View>
+    <View style={[styles.container, styles.row]}>
+      <View style={[styles.row, { gap: 8 }]}>
         {notifiIsloading && (
           <Lottie
             source={require("../../assets/animations/loading.json")}
@@ -57,17 +57,14 @@ export const Notification = () => {
         )}
 
         <View style={styles.txtctr}>
-          <Text
-            style={[text, { fontWeight: "600", textTransform: "capitalize" }]}
-          >
-            {notificationtitle}
-          </Text>
+          <Text style={subtitle}>{notificationtitle}</Text>
+
           <Text style={text}>{notificationtext}</Text>
         </View>
       </View>
 
       <Pressable onPress={onclosenotification}>
-        <EVIcon name="close" size={16} color={colors.text} />
+        <CloseIcon />
       </Pressable>
     </View>
   );
@@ -79,20 +76,23 @@ const styles = StyleSheet.create({
     top: 32,
     width: "96%",
     padding: 8,
-    flexDirection: "row",
-    alignItems: "center",
     justifyContent: "space-between",
     alignSelf: "center",
     borderRadius: 8,
     backgroundColor: colors.accent,
+    zIndex: 2000,
+  },
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   txtctr: {
-    marginLeft: 50,
-    gap: 2,
+    gap: 4,
   },
   animation: {
+    width: 40,
+    height: 40,
     alignSelf: "flex-start",
     alignContent: "flex-start",
-    marginLeft: -90,
   },
 });
