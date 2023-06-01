@@ -3,14 +3,31 @@ import { StyleSheet, View, Text, TextInput } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { NavBar } from "../components/NavBar";
 import { BottomBtn } from "../components/buttons/BottomBtn";
+import { CreateIcon } from "../assets/icons/icons";
 import { container, subtitle, text } from "../constants/styles";
 import { Divider } from "../components/global/Divider";
 import { colors } from "../constants/colors";
-import { CreateIcon } from "../assets/icons/icons";
 
 const CreateAudioScreen = () => {
   const [audiotitle, setaudiotitle] = useState("");
   const [audiocontent, setaudiocontent] = useState("");
+
+  const { red, text } = colors;
+  const CONTENT_THRESH = 32;
+
+  const titleerror = () => {
+    return audiotitle.length > 22 || audiotitle.includes(" ") ? true : false;
+  };
+
+  const contenterror = () => {
+    const emoji_regex =
+      /[\p{Extended_Pictographic}\u{1F3FB}-\u{1F3FF}\u{1F9B0}-\u{1F9B3}]/u;
+
+    return audiocontent.length > CONTENT_THRESH ||
+      emoji_regex.test(audiocontent)
+      ? true
+      : false;
+  };
 
   return (
     <SafeAreaView style={container}>
@@ -23,7 +40,13 @@ const CreateAudioScreen = () => {
         onChangeText={(text) => setaudiotitle(text)}
         placeholder="choose a title"
         placeholderTextColor={colors.textlight}
-        style={styles.titleinput}
+        onChange={titleerror}
+        style={[
+          styles.titleinput,
+          {
+            color: titleerror() ? red : text,
+          },
+        ]}
       />
 
       <View style={styles.contentctr}>
@@ -32,6 +55,7 @@ const CreateAudioScreen = () => {
           onChangeText={(text) => setaudiocontent(text)}
           placeholder="your text..."
           placeholderTextColor={colors.textlight}
+          onKeyPress={contenterror}
           style={styles.contentinput}
           multiline
           numberOfLines={9}
@@ -39,8 +63,10 @@ const CreateAudioScreen = () => {
 
         <Divider style={styles.divider} />
 
-        <Text style={styles.charcount}>
-          {audiocontent.length} of 1024 characters
+        <Text
+          style={[styles.charcount, { color: contenterror() ? red : text }]}
+        >
+          {audiocontent.length} of {CONTENT_THRESH} characters
         </Text>
       </View>
 
@@ -48,7 +74,12 @@ const CreateAudioScreen = () => {
         <Text style={subtitle}>Select a voice to use</Text>
       </View>
 
-      <BottomBtn title="create" icon={<CreateIcon />} onclick={() => {}} />
+      <BottomBtn
+        title="create"
+        icon={<CreateIcon />}
+        btnDisabled={titleerror() || contenterror()}
+        onclick={() => {}}
+      />
     </SafeAreaView>
   );
 };
@@ -70,7 +101,7 @@ const styles = StyleSheet.create({
   },
   contentinput: {
     ...text,
-    padding: 8,
+    paddingHorizontal: 8,
     height: 150,
     textAlignVertical: "top",
   },
