@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { StyleSheet, View, Text, TextInput } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import AntDeisgnIcon from "react-native-vector-icons/AntDesign";
 import { NavBar } from "../components/NavBar";
 import { BottomBtn } from "../components/buttons/BottomBtn";
 import { container, subtitle, text } from "../constants/styles";
-import { colors } from "../constants/colors";
 import { Divider } from "../components/global/Divider";
+import { colors } from "../constants/colors";
+import { CreateIcon } from "../assets/icons/icons";
 
 const CreateAudioScreen = () => {
   const [audiotitle, setaudiotitle] = useState("");
@@ -48,11 +48,7 @@ const CreateAudioScreen = () => {
         <Text style={subtitle}>Select a voice to use</Text>
       </View>
 
-      <BottomBtn
-        title="create"
-        icon={<AntDeisgnIcon name="plus" color={colors.text} size={22} />}
-        onclick={() => {}}
-      />
+      <BottomBtn title="create" icon={<CreateIcon />} onclick={() => {}} />
     </SafeAreaView>
   );
 };
