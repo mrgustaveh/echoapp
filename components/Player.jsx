@@ -183,8 +183,12 @@ export const Player = () => {
     .onEnd(() => {
       if (translateYSharedValue.value > -SCREEN_HEIGHT / 14) {
         scrollTo(SCREEN_HEIGHT / 1.5);
+
+        if (isplaying) {
+          runOnJS(pauseaudio);
+        }
+
         runOnJS(setplyrisvisible)(false);
-        runOnJS(pauseaudio);
       } else if (translateYSharedValue.value <= -SCREEN_HEIGHT / 14) {
         scrollTo(0);
       }
