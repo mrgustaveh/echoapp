@@ -313,3 +313,22 @@ export const RewindIcon = () => {
     </Svg>
   );
 };
+
+export const CloseIcon = () => {
+  return (
+    <Svg
+      width="20"
+      height="20"
+      viewBox="0 0 26 26"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <Path
+        d="M16 10L10 16M10 10L16 16M25 13C25 18.6568 25 21.4852 23.242 23.242C21.4864 25 18.6568 25 13 25C7.3432 25 4.5148 25 2.7568 23.242C1 21.4864 1 18.6568 1 13C1 7.3432 1 4.5148 2.7568 2.7568C4.516 1 7.3432 1 13 1C18.6568 1 21.4852 1 23.242 2.7568C24.4108 3.9256 24.802 5.5684 24.934 8.2"
+        stroke="#DADAE1"
+        stroke-width="1.5"
+        stroke-linecap="round"
+      />
+    </Svg>
+  );
+};
