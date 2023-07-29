@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: colors.primarylight,
+    backgroundColor: "rgba(50, 50, 50, 0.8)",
   },
   animations: {
     width: "94%",
