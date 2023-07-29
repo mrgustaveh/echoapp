@@ -75,7 +75,13 @@ function Authentication() {
         Sign in to get started
       </Text>
 
-      <TouchableOpacity onPress={ongooglesignin} style={styles.pressable}>
+      <TouchableOpacity
+        onPress={ongooglesignin}
+        style={[
+          styles.pressable,
+          { borderWidth: 0.5, borderColor: colors.lineclr },
+        ]}
+      >
         <Image source={googleimg} style={styles.providerimg} />
         <Text style={text}>Sign in with Google</Text>
       </TouchableOpacity>
@@ -102,7 +108,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 8,
     borderRadius: 6,
-    backgroundColor: colors.accentlight,
+    backgroundColor: colors.accent,
   },
   providerimg: {
     width: 26,
