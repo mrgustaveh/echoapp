@@ -89,11 +89,7 @@ const DetailScreen = ({ route, navigation }) => {
       <NavBar />
 
       <View style={styles.detailctr}>
-        {isvisible ? (
-          <TextSkeleton />
-        ) : (
-          <Text style={[subtitle, { textAlign: "center" }]}>Text</Text>
-        )}
+        {isvisible ? <TextSkeleton /> : <Text style={subtitle}>Prompt</Text>}
 
         {isvisible ? (
           <>
@@ -109,11 +105,14 @@ const DetailScreen = ({ route, navigation }) => {
         {isvisible ? (
           <TextSkeleton />
         ) : (
-          <View style={styles.date}>
-            <CalendarIcon />
-            <Text style={styles.datetxt}>{formatteddate}</Text>
-            <Text style={styles.datetxt}>{timediff}</Text>
-          </View>
+          <>
+            <Text style={[subtitle, { marginTop: 24 }]}>Created</Text>
+            <View style={styles.date}>
+              <CalendarIcon />
+              <Text style={styles.datetxt}>{formatteddate}</Text>
+              <Text style={styles.datetxt}>({timediff})</Text>
+            </View>
+          </>
         )}
 
         {isvisible ? (
