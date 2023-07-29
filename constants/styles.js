@@ -7,19 +7,19 @@ export const container = {
 
 export const text = {
   fontSize: 12,
-  fontFamily: "open-sans-regular",
+  fontFamily: "ops-light",
   color: colors.text,
 };
 
 export const subtitle = {
   fontSize: 12,
-  fontFamily: "open-sans-bold",
+  fontFamily: "ops-regular",
   color: colors.text,
 };
 
 export const title = {
   fontSize: 16,
-  fontFamily: "open-sans-bold",
+  fontFamily: "ops-regular",
   color: colors.text,
 };
 
