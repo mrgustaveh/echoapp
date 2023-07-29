@@ -26,7 +26,7 @@ export const PreviewCtr = ({ promptUid, description, audioUrl, title }) => {
       <Text
         style={[text, { textAlign: "justify", textTransform: "lowercase" }]}
       >
-        {String(description).substring(0, 80)}...
+        {String(description).substring(0, 59)} . . .
       </Text>
 
       <TouchableOpacity onPress={playaudio}>
@@ -41,10 +41,12 @@ const styles = StyleSheet.create({
     width: SCREEN_WIDTH / 2 - 12,
     height: SCREEN_HEIGHT / 5 - 12,
     marginBottom: 8,
-    marginHorizontal: 3,
+    marginHorizontal: 5,
     padding: 8,
     justifyContent: "space-between",
-    borderRadius: 8,
-    backgroundColor: colors.accentlight,
+    borderWidth: 0.5,
+    borderColor: colors.lineclr,
+    borderRadius: 6,
+    backgroundColor: colors.accent,
   },
 });
