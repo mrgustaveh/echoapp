@@ -1,9 +1,6 @@
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import EntypoIcon from "react-native-vector-icons/Entypo";
-import OctIcon from "react-native-vector-icons/Octicons";
-import { SearchIcon } from "../assets/icons/icons";
-import { colors } from "../constants/colors";
+import { SearchIcon, UserIcon, ChevronIcon } from "../assets/icons/icons";
 
 export const NavBar = ({ screen }) => {
   const navigation = useNavigation();
@@ -17,15 +14,11 @@ export const NavBar = ({ screen }) => {
         style={styles.button}
         onPress={screen === "home" ? showsamples : goback}
       >
-        {screen === "home" ? (
-          <SearchIcon />
-        ) : (
-          <EntypoIcon name="chevron-left" size={20} color={colors.text} />
-        )}
+        {screen === "home" ? <SearchIcon /> : <ChevronIcon />}
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button} onPress={gotoprofile}>
-        <OctIcon name="person" size={20} color={colors.text} />
+        <UserIcon />
       </TouchableOpacity>
     </View>
   );
