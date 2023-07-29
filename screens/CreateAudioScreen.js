@@ -4,9 +4,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { NavBar } from "../components/NavBar";
 import { BottomBtn } from "../components/buttons/BottomBtn";
 import { CreateIcon } from "../assets/icons/icons";
-import { container, subtitle, text } from "../constants/styles";
 import { Divider } from "../components/global/Divider";
 import { VoicePreview } from "../components/create/VoicePreview";
+import { container, subtitle, text } from "../constants/styles";
 import { colors } from "../constants/colors";
 
 const CreateAudioScreen = () => {
@@ -40,7 +40,7 @@ const CreateAudioScreen = () => {
         value={audiotitle}
         onChangeText={(text) => setaudiotitle(text)}
         placeholder="choose a title"
-        placeholderTextColor={colors.textlight}
+        placeholderTextColor={colors.text}
         onChange={titleerror}
         style={[
           styles.titleinput,
@@ -54,8 +54,8 @@ const CreateAudioScreen = () => {
         <TextInput
           value={audiocontent}
           onChangeText={(text) => setaudiocontent(text)}
-          placeholder="your text..."
-          placeholderTextColor={colors.textlight}
+          placeholder="your prompt here . . ."
+          placeholderTextColor={colors.text}
           onKeyPress={contenterror}
           style={styles.contentinput}
           multiline
@@ -64,11 +64,14 @@ const CreateAudioScreen = () => {
 
         <Divider style={styles.divider} />
 
-        <Text
-          style={[styles.charcount, { color: contenterror() ? red : text }]}
-        >
-          {audiocontent.length} of {CONTENT_THRESH} characters
-        </Text>
+        <View style={{ flexDirection: "row" }}>
+          <Text
+            style={[styles.charcount, { color: contenterror() ? red : text }]}
+          >
+            {audiocontent.length} of {CONTENT_THRESH}
+          </Text>
+          <Text style={styles.chars}>characters</Text>
+        </View>
       </View>
 
       <View style={styles.voicesctr}>
@@ -85,8 +88,13 @@ const CreateAudioScreen = () => {
           <VoicePreview />
           <VoicePreview />
           <VoicePreview />
-          <VoicePreview isactive />
           <VoicePreview />
+          <VoicePreview />
+          <VoicePreview />
+          <VoicePreview />
+          <VoicePreview />
+          <VoicePreview />
+          <VoicePreview isactive />
         </View>
         {/* <FlatList
           style={{ alignSelf: "stretch", paddingHorizontal: 7 }}
@@ -118,17 +126,23 @@ const CreateAudioScreen = () => {
 const styles = StyleSheet.create({
   titleinput: {
     ...text,
-    padding: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
     marginHorizontal: 8,
+    textAlignVertical: "center",
+    borderWidth: 0.5,
+    borderColor: colors.lineclr,
     borderRadius: 6,
-    backgroundColor: colors.accentlight,
+    backgroundColor: colors.accent,
   },
   contentctr: {
     marginTop: 16,
     paddingVertical: 8,
     marginHorizontal: 8,
+    borderWidth: 0.5,
+    borderColor: colors.lineclr,
     borderRadius: 6,
-    backgroundColor: colors.accentlight,
+    backgroundColor: colors.accent,
   },
   contentinput: {
     ...text,
@@ -142,8 +156,12 @@ const styles = StyleSheet.create({
   },
   charcount: {
     ...text,
+    fontFamily: "sc-bold",
     paddingHorizontal: 8,
     textAlign: "right",
+  },
+  chars: {
+    ...text,
   },
   voicesctr: {
     marginTop: 12,
