@@ -48,13 +48,29 @@ export const getprompt = async ({ idtoken, promptuid }) => {
   return { isok: res.ok, prompt };
 };
 
+export const searchprompts = async ({ idtoken, searchval }) => {
+  const URL = BASE_URL + `app/prompts?search=${searchval}`;
+
+  const res = await fetch(URL, {
+    method: "GET",
+    headers: {
+      Authorization: idtoken,
+      "Content-Type": "application/json",
+    },
+    body: null,
+  });
+
+  const prompts = await res.json();
+  return { isok: res.ok, prompts };
+};
+
 export const destroyprompt = async ({ idtoken, promptuid }) => {
   const URL = BASE_URL + prompturls.prompts + `${promptuid}/`;
 
   const res = await fetch(URL, {
     method: "DELETE",
     headers: {
-      AUthorization: idtoken,
+      Authorization: idtoken,
       "Content-Type": "application/json",
     },
     body: null,
