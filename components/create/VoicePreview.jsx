@@ -11,7 +11,7 @@ import { text } from "../../constants/styles";
 import { colors } from "../../constants/colors";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
-const placeholderimage = require("../../assets/img/google.png");
+const placeholderimage = require("../../assets/img/placeholder.jpg");
 
 export const VoicePreview = ({
   voiceid,
@@ -25,15 +25,12 @@ export const VoicePreview = ({
       style={[
         styles.container,
         {
-          borderColor: isactive ? colors.accent : colors.accent,
+          borderColor: isactive ? colors.accent : colors.lineclr,
           backgroundColor: isactive ? colors.primary : colors.accent,
         },
       ]}
     >
-      <View style={styles.detailctr}>
-        <Image source={placeholderimage} style={styles.image} />
-        <Text style={text}>lorem ipsum</Text>
-      </View>
+      <Image source={placeholderimage} style={styles.image} />
 
       <TouchableOpacity>
         <PlayIcon />
@@ -45,16 +42,14 @@ export const VoicePreview = ({
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    alignItems: "flex-start",
+    alignItems: "center",
     justifyContent: "space-between",
     width: SCREEN_WIDTH / 2 - 12,
-    padding: 7,
-    borderWidth: 1,
-    borderRadius: 8,
+    padding: 8,
+    borderWidth: 0.5,
+    borderRadius: 6,
   },
-  detailctr: {
-    gap: 4,
-  },
+
   image: {
     width: 40,
     height: 40,
