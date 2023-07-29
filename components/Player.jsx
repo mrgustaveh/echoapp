@@ -131,6 +131,7 @@ export const Player = () => {
       animationref.current?.reset();
       setisplaying(false);
       setcurrpos(0);
+      scrollTo(SCREEN_HEIGHT / 1.5);
     }
   };
 
@@ -274,7 +275,7 @@ const styles = StyleSheet.create({
     padding: 8,
     flex: 1,
     borderRadius: 8,
-    backgroundColor: "rgba(56, 60, 72, 0.95)",
+    backgroundColor: "rgba(50, 50, 50, 0.8)",
     zIndex: 10000,
   },
   line: {
@@ -282,30 +283,32 @@ const styles = StyleSheet.create({
     height: 4,
     alignSelf: "center",
     borderRadius: 4,
-    backgroundColor: colors.textlight,
+    backgroundColor: colors.primary,
   },
   mic: {
     width: 60,
     height: 60,
-    marginTop: 32,
+    marginTop: 28,
     alignSelf: "center",
     alignItems: "center",
     justifyContent: "center",
+    borderWidth: 0.5,
+    borderColor: colors.lineclr,
     borderRadius: 500,
-    backgroundColor: colors.primary,
+    backgroundColor: colors.accent,
   },
   audTitle: {
-    marginTop: 32,
+    marginTop: 28,
     marginBottom: 8,
   },
   audProgress: {
-    height: 6,
-    marginTop: 8,
+    height: 1,
+    marginTop: 4,
     borderRadius: 8,
-    backgroundColor: colors.textlight,
+    backgroundColor: colors.lineclr,
   },
   controls: {
-    marginTop: 48,
+    marginTop: 32,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
