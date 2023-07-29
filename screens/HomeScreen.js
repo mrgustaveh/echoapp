@@ -65,7 +65,7 @@ const HomeScreen = () => {
         />
       ) : (
         <FlatList
-          style={{ alignSelf: "stretch", paddingHorizontal: 7 }}
+          style={{ alignSelf: "stretch", paddingHorizontal: 2 }}
           data={myprompts}
           keyExtractor={(item) => item?.promptUid}
           showsVerticalScrollIndicator={false}
@@ -83,7 +83,7 @@ const HomeScreen = () => {
               <RefreshControl
                 refreshing={isrfreshing}
                 onRefresh={onRefresh}
-                colors={[colors.accent, colors.accentlight]}
+                colors={[colors.accent, colors.accent]}
                 progressBackgroundColor={colors.primary}
               />
             )
