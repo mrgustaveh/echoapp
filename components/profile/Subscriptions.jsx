@@ -81,11 +81,14 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 40,
     marginHorizontal: 16,
-    padding: 8,
-    borderRadius: 12,
+    paddingVertical: 8,
+    borderWidth: 0.5,
+    borderRadius: 8,
+    borderColor: colors.lineclr,
     backgroundColor: colors.accent,
   },
   plan: {
+    paddingHorizontal: 8,
     marginVertical: 8,
   },
   miscctr: {
@@ -98,8 +101,8 @@ const styles = StyleSheet.create({
     height: 60,
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 60,
-    backgroundColor: colors.primarylight,
+    borderRadius: 500,
+    backgroundColor: colors.primary,
   },
   plandescription: {
     gap: 6,
@@ -108,7 +111,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
     padding: 10,
     alignItems: "center",
-    borderRadius: 6,
-    backgroundColor: colors.primarylight,
+    borderRadius: 4,
+    backgroundColor: "rgba(31,31,31,1)",
   },
 });
