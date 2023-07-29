@@ -74,8 +74,9 @@ function App() {
   }, []);
 
   const [fontsLoaded] = useFonts({
-    "open-sans-regular": require("./assets/font/OpenSans-Regular.ttf"),
-    "open-sans-bold": require("./assets/font/OpenSans-SemiBold.ttf"),
+    "ops-light": require("./assets/font/OpenSans-Light.ttf"),
+    "ops-regular": require("./assets/font/OpenSans-Regular.ttf"),
+    "sc-bold": require("./assets/font/SourceCodePro-SemiBold.ttf"),
   });
 
   const onLayoutRootView = useCallback(async () => {
