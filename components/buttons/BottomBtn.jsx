@@ -2,11 +2,12 @@ import { StyleSheet, TouchableOpacity, Text } from "react-native";
 import { text } from "../../constants/styles";
 import { colors } from "../../constants/colors";
 
-export const BottomBtn = ({ title, icon, btnDisabled, onclick, iconfirst }) => {
+export const BottomBtn = ({ title, icon, btnDisabled, onclick, iconfirst, style }) => {
   return (
     <TouchableOpacity
       style={[
         styles.container,
+        {...style},
         {
           flexDirection: iconfirst ? "row-reverse" : "row",
         },
