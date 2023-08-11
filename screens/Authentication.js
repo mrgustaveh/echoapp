@@ -1,21 +1,24 @@
 import { StyleSheet, TouchableOpacity, Image, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useGoogleAuth, useFbAuth } from "../utils/socialauth";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useGoogleAuth } from "../utils/socialauth";
 import { usealert } from "../context/alertctx";
+// import { useAuth } from "../context/authctxt";
 import { container, text } from "../constants/styles";
 import { colors } from "../constants/colors";
 
 const googleimg = require("../assets/img/google.png");
-const fbimg = require("../assets/img/fb.png");
 
 function Authentication() {
   const { signInWithGoogle } = useGoogleAuth();
-  const { signInWithFb } = useFbAuth();
+  // const { idToken } = useAuth();
   const { setisvible, setisloading, setissuccess } = usealert();
 
-  const setprevauth = () =>
-    AsyncStorage.setItem("prevauth", JSON.stringify({ prevauth: true }));
+  // const setprevauth = () =>
+  //   AsyncStorage.setItem(
+  //     "prevauth",
+  //     JSON.stringify({ prevauth: true, prevtoken: idToken })
+  //   );
 
   const ongooglesignin = () => {
     signInWithGoogle()
@@ -24,11 +27,9 @@ function Authentication() {
         setisloading(true);
 
         if (res?.type === "success") {
-          setisloading(false);
-          setissuccess(true);
+          setisloading(true);
+          // setprevauth();
         }
-
-        setprevauth();
       })
       .catch(() => {
         setisvible(true);
@@ -40,33 +41,6 @@ function Authentication() {
           setisvible(false);
         }, 3500);
       });
-  };
-
-  const onfbsignin = async () => {
-    signInWithFb()
-      .then(() => {
-        setisvible(true);
-        setisloading(true);
-
-        if (res?.type === "success") {
-          setisloading(false);
-          setissuccess(true);
-        }
-
-        setprevauth();
-      })
-      .catch(() => {
-        setisvible(true);
-        setisloading(false);
-        setissuccess(false);
-      })
-      .finally(() => {
-        setTimeout(() => {
-          setisvible(false);
-        }, 3500);
-      });
-
-    setisvible(false);
   };
 
   return (
@@ -84,14 +58,6 @@ function Authentication() {
       >
         <Image source={googleimg} style={styles.providerimg} />
         <Text style={text}>Sign in with Google</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={onfbsignin}
-        style={[styles.pressable, { backgroundColor: colors.fbblue }]}
-      >
-        <Image source={fbimg} style={styles.providerimg} />
-        <Text style={text}>Sign in with Facebook</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
