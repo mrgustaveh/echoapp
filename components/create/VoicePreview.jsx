@@ -14,8 +14,8 @@ const { width: SCREEN_WIDTH } = Dimensions.get("window");
 const placeholderimage = require("../../assets/img/placeholder.jpg");
 
 export const VoicePreview = ({
+  preVimage,
   voiceid,
-  description,
   audioUrl,
   onsetvoiceId,
   isactive,
@@ -30,7 +30,7 @@ export const VoicePreview = ({
         },
       ]}
     >
-      <Image source={placeholderimage} style={styles.image} />
+      <Image source={preVimage ?? placeholderimage} style={styles.image} />
 
       <TouchableOpacity>
         <PlayIcon />
