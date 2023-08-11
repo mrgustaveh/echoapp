@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   animation: {
     width: 40,
     height: 40,
-    alignSelf: "flex-start",
-    alignContent: "flex-start",
+    alignSelf: "center",
+    // alignContent: "",
   },
 });
