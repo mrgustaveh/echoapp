@@ -29,32 +29,34 @@ export const Notification = () => {
   return (
     <View style={[styles.container, styles.row]}>
       <View style={[styles.row, { gap: 8 }]}>
-        {notifiIsloading && (
-          <Lottie
-            source={require("../../assets/animations/loading.json")}
-            autoPlay
-            loop={true}
-            style={styles.animation}
-          />
-        )}
+        <View style={styles.animationctr}>
+          {notifiIsloading && (
+            <Lottie
+              source={require("../../assets/animations/loading.json")}
+              autoPlay
+              loop={true}
+              style={styles.animation}
+            />
+          )}
 
-        {!notifiIsloading && issuccess && (
-          <Lottie
-            source={require("../../assets/animations/success.json")}
-            autoPlay
-            loop={false}
-            style={styles.animation}
-          />
-        )}
+          {!notifiIsloading && issuccess && (
+            <Lottie
+              source={require("../../assets/animations/success.json")}
+              autoPlay
+              loop={false}
+              style={[styles.animation, { width: 46, height: 46, padding: 4 }]}
+            />
+          )}
 
-        {!notifiIsloading && !issuccess && (
-          <Lottie
-            source={require("../../assets/animations/error.json")}
-            autoPlay
-            loop={false}
-            style={styles.animation}
-          />
-        )}
+          {!notifiIsloading && !issuccess && (
+            <Lottie
+              source={require("../../assets/animations/error.json")}
+              autoPlay
+              loop={false}
+              style={styles.animation}
+            />
+          )}
+        </View>
 
         <View style={styles.txtctr}>
           <Text style={subtitle}>{notificationtitle}</Text>
@@ -63,9 +65,7 @@ export const Notification = () => {
         </View>
       </View>
 
-      <Pressable onPress={onclosenotification}>
-        <CloseIcon />
-      </Pressable>
+      <Pressable onPress={onclosenotification}>{/* <CloseIcon /> */}</Pressable>
     </View>
   );
 };
@@ -75,10 +75,11 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 32,
     width: "96%",
-    padding: 8,
     justifyContent: "space-between",
     alignSelf: "center",
-    borderRadius: 8,
+    borderRadius: 4,
+    borderWidth: 0.5,
+    borderColor: colors.lineclr,
     backgroundColor: colors.accent,
     zIndex: 2000,
   },
@@ -89,10 +90,20 @@ const styles = StyleSheet.create({
   txtctr: {
     gap: 4,
   },
+  animationctr: {
+    width: 48,
+    height: "100%",
+    marginHorizontal: 12,
+    padding: 4,
+    borderRightWidth: 0.5,
+    borderRightColor: colors.lineclr,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   animation: {
-    width: 40,
-    height: 40,
-    alignSelf: "center",
-    // alignContent: "",
+    width: 55,
+    height: 55,
+    alignSelf: "flex-end",
+    justifyContent: "center",
   },
 });
