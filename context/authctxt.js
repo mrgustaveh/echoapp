@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase/config";
-import { FirebaseSignin } from "../utils/socialauth";
+import { ReauthenticateWithFirebase } from "../utils/socialauth";
 
 const authcontext = createContext({
   authenticated: false,
@@ -13,25 +13,26 @@ const authcontext = createContext({
 
 export const AuthProvider = ({ children }) => {
   const [prevToken, setprevToken] = useState(null);
+  const [prevauth, setprevauth] = useState(null);
   const [authenticated, setauthenticated] = useState(false);
   const [idToken, setidToken] = useState("");
   const [userUid, setUserUid] = useState("");
 
   const getprevauthtoken = async () => {
     const jsonValue = await AsyncStorage.getItem("prevauth");
-    const prevToken =
-      jsonValue != null ? JSON.parse(jsonValue)?.prevtoken : null;
+    const prevToken = jsonValue != null ? JSON.parse(jsonValue) : null;
 
-    setprevToken(prevToken);
+    setprevauth(prevToken?.prevauth);
+    setprevToken(prevToken?.prevtoken);
   };
 
   useEffect(() => {
     getprevauthtoken();
 
     if (prevToken !== null) {
-      FirebaseSignin(prevToken);
+      ReauthenticateWithFirebase(prevToken);
     }
-  }, [prevToken]);
+  }, [prevToken, auth]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -43,6 +44,10 @@ export const AuthProvider = ({ children }) => {
       } else {
         setauthenticated(false);
         setidToken("");
+
+        if (prevToken !== null) {
+          alert("Please sign in again");
+        }
       }
     });
 

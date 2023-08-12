@@ -2,15 +2,16 @@ import { useEffect } from "react";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
+import { reauthenticateWithCredential } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { auth } from "../firebase/config";
 
 WebBrowser.maybeCompleteAuthSession();
 
-const setprevgltoken = (idToken) =>
+const setprevauthObj = (authObj, idToken) =>
   AsyncStorage.setItem(
     "prevauth",
-    JSON.stringify({ prevauth: true, prevtoken: idToken })
+    JSON.stringify({ prevauth: authObj, prevtoken: idToken })
   );
 
 export const useGoogleAuth = () => {
@@ -31,17 +32,19 @@ export const useGoogleAuth = () => {
 
       const credential = GoogleAuthProvider.credential(id_token);
       signInWithCredential(auth, credential);
-      setprevgltoken(id_token);
+
+      setprevauthObj(auth, id_token);
     }
   }, [response]);
 
   return { request, response, signInWithGoogle: promptAsync };
 };
 
-export const FirebaseSignin = (idToken) => {
+export const ReauthenticateWithFirebase = (prevauth, previdtoken) => {
   try {
-    const credential = GoogleAuthProvider.credential(idToken);
-    signInWithCredential(auth, credential);
+    const credential = GoogleAuthProvider.credential(previdtoken);
+
+    reauthenticateWithCredential(prevauth?.currentUser, credential);
   } catch (err) {
     alert("Google sign in error, try again");
   }
