@@ -37,7 +37,10 @@ function App() {
   const [accountchecked, setaccountchecked] = useState(false);
 
   useEffect(() => {
-    if (authenticated && idToken !== "") {
+    if (authenticated && idToken !== null) {
+      setisvible(true);
+      setisloading(true);
+
       getuser({ idtoken: idToken })
         .then(async (res) => {
           if (res.user?.length === 0) {
@@ -48,9 +51,10 @@ function App() {
           }
 
           setaccountchecked(true);
-          setisvible(false);
+          setissuccess(true);
         })
         .catch(() => {
+          setaccountchecked(false);
           setisloading(false);
           setissuccess(false);
 
