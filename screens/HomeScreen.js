@@ -56,8 +56,8 @@ const HomeScreen = () => {
 
       {isvisible ? (
         <FlatList
-          style={{ alignSelf: "stretch", paddingHorizontal: 7 }}
-          data={[1, 2, 3]}
+          style={{ paddingHorizontal: 2 }}
+          data={[1, 2, 3, 4, 5]}
           keyExtractor={(item) => item}
           showsVerticalScrollIndicator={false}
           numColumns={2}
@@ -65,7 +65,7 @@ const HomeScreen = () => {
         />
       ) : (
         <FlatList
-          style={{ alignSelf: "stretch", paddingHorizontal: 2 }}
+          style={{ paddingHorizontal: 2 }}
           data={myprompts}
           keyExtractor={(item) => item?.promptUid}
           showsVerticalScrollIndicator={false}
@@ -79,14 +79,12 @@ const HomeScreen = () => {
             />
           )}
           refreshControl={
-            myprompts.length !== 0 && (
-              <RefreshControl
-                refreshing={isrfreshing}
-                onRefresh={onRefresh}
-                colors={[colors.accent, colors.accent]}
-                progressBackgroundColor={colors.primary}
-              />
-            )
+            <RefreshControl
+              refreshing={isrfreshing}
+              onRefresh={onRefresh}
+              colors={[colors.accent, colors.accent]}
+              progressBackgroundColor={colors.primary}
+            />
           }
         />
       )}
