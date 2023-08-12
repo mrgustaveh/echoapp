@@ -24,10 +24,10 @@ export const SquareSkeleton = () => {
   return (
     <MotiView style={styles.skltnsctr}>
       <Skeleton
-        width={SCREEN_WIDTH / 2 - 12}
-        height={SCREEN_HEIGHT / 5 - 12}
+        width="98%"
+        height={58}
         colorMode="dark"
-        radius={8}
+        radius={4}
         transition={{
           translateX: { type: "timing", loop: true },
         }}
