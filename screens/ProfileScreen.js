@@ -1,6 +1,7 @@
 import { Image, TouchableOpacity, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Subscriptions } from "../components/profile/Subscriptions";
 import { auth } from "../firebase/config";
 import { ChevronIcon, SignOutIcon } from "../assets/icons/icons";
@@ -12,7 +13,10 @@ function ProfileScreen() {
 
   const goback = () => navigation.goBack();
 
-  const onsignout = async () => await auth.signOut();
+  const onsignout = async () => {
+    await AsyncStorage.removeItem("prevauth");
+    await auth.signOut();
+  };
 
   return (
     <SafeAreaView style={container}>
