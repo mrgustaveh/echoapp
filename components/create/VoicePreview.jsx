@@ -1,40 +1,34 @@
-import {
-  Dimensions,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  Image,
-  Text,
-} from "react-native";
-import { PlayIcon } from "../../assets/icons/icons";
-import { text } from "../../constants/styles";
+import { StyleSheet, TouchableOpacity, Image } from "react-native";
+import { useplayer } from "../../context/playerctx";
 import { colors } from "../../constants/colors";
 
-const { width: SCREEN_WIDTH } = Dimensions.get("window");
 const placeholderimage = require("../../assets/img/placeholder.jpg");
 
 export const VoicePreview = ({
   preVimage,
   voiceid,
   audioUrl,
-  onsetvoiceId,
+  setVoiceid,
   isactive,
 }) => {
+  const { setplyrisvisible, setaudURL, setaudtitle } = useplayer();
+
   return (
     <TouchableOpacity
       style={[
         styles.container,
         {
-          borderColor: isactive ? colors.accent : colors.lineclr,
-          backgroundColor: isactive ? colors.primary : colors.accent,
+          borderColor: isactive ? colors.lineclr : colors.primary,
         },
       ]}
+      onPress={() => {
+        setVoiceid(voiceid);
+        setplyrisvisible(true);
+        setaudURL(audioUrl);
+        setaudtitle("The Theory Of Everything");
+      }}
     >
-      <Image source={preVimage ?? placeholderimage} style={styles.image} />
-
-      <TouchableOpacity>
-        <PlayIcon />
-      </TouchableOpacity>
+      <Image source={{ uri: preVimage }} style={styles.image} />
     </TouchableOpacity>
   );
 };
@@ -44,15 +38,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    width: SCREEN_WIDTH / 2 - 12,
-    padding: 8,
+    padding: 4,
     borderWidth: 0.5,
-    borderRadius: 6,
+    borderRadius: 500,
   },
 
   image: {
-    width: 40,
-    height: 40,
+    width: 48,
+    height: 48,
     borderRadius: 500,
+    resizeMode: "cover",
   },
 });
