@@ -8,3 +8,7 @@ export const authurls = {
 export const prompturls = {
   prompts: "app/prompts/",
 };
+
+export const samplesurls = {
+  samples: "app/aud-samples/",
+};
