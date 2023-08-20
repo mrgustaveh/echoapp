@@ -12,12 +12,15 @@ import { usenotification } from "../context/notificationctx";
 import { createprompt } from "../utils/api/prompts";
 import { colors } from "../constants/colors";
 import { container, subtitle, text } from "../constants/styles";
+import { getaudiosamples } from "../utils/api/samples";
+import { usealert } from "../context/alertctx";
 
 const CreateAudioScreen = () => {
   const [audiotitle, setaudiotitle] = useState("");
   const [audiocontent, setaudiocontent] = useState("");
   const [keybrdisvsble, setkeybrdisvsble] = useState(false);
-  const [voiceId, setVoiceid] = useState("EXAVITQu4vr4xnSDxMaL");
+  const [voiceId, setVoiceid] = useState("");
+  const [audiosamples, setaudiosamples] = useState([]);
 
   const navigation = useNavigation();
   const { idToken } = useAuth();
@@ -28,6 +31,7 @@ const CreateAudioScreen = () => {
     setnotificationtitle,
     setnotificationtext,
   } = usenotification();
+  const { setisvible, setisloading } = usealert();
 
   const { red, text } = colors;
 
@@ -35,51 +39,6 @@ const CreateAudioScreen = () => {
 
   const emoji_regex =
     /[\p{Extended_Pictographic}\u{1F3FB}-\u{1F3FF}\u{1F9B0}-\u{1F9B3}]/u;
-
-  const audiosamples = [
-    {
-      voiceid: "ErXwobaYiN019PkySvjV",
-      title: "Antoni",
-      previmg: "",
-      audioUrl: "",
-    },
-    {
-      voiceid: "EXAVITQu4vr4xnSDxMaL",
-      title: "Bella",
-      previmg: "",
-      audioUrl: "",
-    },
-    {
-      voiceid: "XB0fDUnXU5powFXDhCwa",
-      title: "Charlotte",
-      previmg: "",
-      audioUrl: "",
-    },
-    {
-      voiceid: "ThT5KcBeYPX3keUQqHPh",
-      title: "Dorothy",
-      previmg: "",
-      audioUrl: "",
-    },
-    {
-      voiceid: "zcAOhNBS3c14rBihAFp1",
-      title: "Giovanni",
-      previmg: "",
-      audioUrl: "",
-    },
-    {
-      voiceid: "XrExE9yKIg1WjnnlVkGX",
-      title: "Matilda",
-      previmg: "",
-      audioUrl: "",
-    },
-    {
-      voiceid: "onwK4e9ZLuTAKqWW03F9",
-      title: "Daniel",
-      previmg: "",
-      audioUrl: "",
-    },
-  ];
 
   const titleerror = () => {
     return audiotitle.length > 22 ||
@@ -97,10 +56,8 @@ const CreateAudioScreen = () => {
   };
 
   const oncreateprompt = async () => {
-    setshownotification(true);
-    setnotifiIsloading(true);
-    setnotificationtitle("processing");
-    setnotificationtext("processing your prompt...");
+    setisvible(true);
+    setisloading(true);
 
     const { isok, prompt } = await createprompt({
       idtoken: idToken,
@@ -110,6 +67,9 @@ const CreateAudioScreen = () => {
     });
 
     if (isok) {
+      setisvible(false);
+      setisloading(false);
+
       setshownotification(true);
       setnotifiIsloading(false);
       setissuccess(true);
@@ -118,11 +78,29 @@ const CreateAudioScreen = () => {
 
       navigation.navigate("detail", { promptID: prompt?.promptUid });
     } else {
+      setisvible(false);
+      setisloading(false);
+
       setshownotification(true);
       setnotifiIsloading(false);
       setissuccess(false);
       setnotificationtitle("error");
       setnotificationtext("we were unable to process your prompt");
+    }
+  };
+
+  const ongetaudiosamples = async () => {
+    setisvible(true);
+    setisloading(true);
+
+    const { isok, samples } = await getaudiosamples({ idtoken: idToken });
+
+    if (isok) {
+      setaudiosamples(samples);
+
+      setTimeout(() => {
+        setisvible(false);
+      }, 3500);
     }
   };
 
@@ -136,12 +114,15 @@ const CreateAudioScreen = () => {
     });
   }, [keybrdisvsble]);
 
+  useEffect(() => {
+    ongetaudiosamples();
+  }, []);
+
   return (
     <SafeAreaView style={container}>
       <NavBar />
 
       <TextInput
-        autoFocus
         autoCorrect={false}
         value={audiotitle}
         onChangeText={(text) => setaudiotitle(text)}
@@ -181,26 +162,26 @@ const CreateAudioScreen = () => {
       </View>
 
       <View style={styles.voicesctr}>
-        <Text style={subtitle}>Select a voice to use</Text>
+        <Text style={[subtitle, { marginTop: 8 }]}>Select a voice to use</Text>
 
         <View
           style={{
             flexDirection: "row",
-            gap: 8,
             flexWrap: "wrap",
-            marginTop: 8,
+            gap: 10,
+            marginTop: 12,
           }}
         >
-          <VoicePreview />
-          <VoicePreview />
-          <VoicePreview />
-          <VoicePreview />
-          <VoicePreview />
-          <VoicePreview />
-          <VoicePreview />
-          <VoicePreview />
-          <VoicePreview />
-          <VoicePreview isactive />
+          {audiosamples?.map((audio) => (
+            <VoicePreview
+              key={audio?.voiceUId}
+              audioUrl={audio?.voiceUrl}
+              isactive={voiceId == audio?.description ? true : false}
+              voiceid={audio?.description}
+              preVimage={audio?.previewUrl}
+              setVoiceid={setVoiceid}
+            />
+          ))}
         </View>
       </View>
 
@@ -225,7 +206,7 @@ const styles = StyleSheet.create({
     textAlignVertical: "center",
     borderWidth: 0.5,
     borderColor: colors.lineclr,
-    borderRadius: 6,
+    borderRadius: 4,
     backgroundColor: colors.accent,
   },
   contentctr: {
@@ -234,7 +215,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
     borderWidth: 0.5,
     borderColor: colors.lineclr,
-    borderRadius: 6,
+    borderRadius: 4,
     backgroundColor: colors.accent,
   },
   contentinput: {

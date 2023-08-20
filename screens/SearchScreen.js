@@ -51,11 +51,10 @@ const SearchScreen = () => {
       />
 
       <FlatList
-        style={{ alignSelf: "stretch", paddingHorizontal: 2, marginTop: 16 }}
+        style={{ paddingHorizontal: 2, marginTop: 16 }}
         data={promptsfromsrch}
-        keyExtractor={(item) => item?.promptUid}
+        keyExtractor={(item, idx) => item?.promptUid + idx}
         showsVerticalScrollIndicator={false}
-        numColumns={2}
         renderItem={({ item }) => (
           <PreviewCtr
             promptUid={item?.promptUid}

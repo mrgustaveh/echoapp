@@ -5,6 +5,7 @@ import { formatDistance, format } from "date-fns";
 import { enGB } from "date-fns/locale";
 import { useAuth } from "../context/authctxt";
 import { usealert } from "../context/alertctx";
+import { usenotification } from "../context/notificationctx";
 import { getprompt, destroyprompt } from "../utils/api/prompts";
 import { NavBar } from "../components/NavBar";
 import { BottomBtn } from "../components/buttons/BottomBtn";
@@ -27,6 +28,13 @@ const DetailScreen = ({ route, navigation }) => {
 
   const { idToken } = useAuth();
   const { setisvible, isvisible, setisloading } = usealert();
+  const {
+    setshownotification,
+    setnotifiIsloading,
+    setissuccess,
+    setnotificationtitle,
+    setnotificationtext,
+  } = usenotification();
 
   const getformateddate = (datestr) => {
     const prevDate = new Date(datestr);
@@ -76,7 +84,19 @@ const DetailScreen = ({ route, navigation }) => {
     if (isok) {
       setisvible(false);
 
+      setshownotification(true);
+      setnotifiIsloading(false);
+      setissuccess(true);
+      setnotificationtitle("success");
+      setnotificationtext("your prompt was deleted successfully");
+
       navigation.navigate("home");
+    } else {
+      setshownotification(true);
+      setnotifiIsloading(false);
+      setissuccess(false);
+      setnotificationtitle("error");
+      setnotificationtext("we were unable to delete your prompt");
     }
   };
 

@@ -14,7 +14,9 @@ function ProfileScreen() {
   const goback = () => navigation.goBack();
 
   const onsignout = async () => {
-    await AsyncStorage.removeItem("prevauth");
+    await AsyncStorage.removeItem("prevauthtkn");
+    await AsyncStorage.removeItem("prevauthObj");
+
     await auth.signOut();
   };
 

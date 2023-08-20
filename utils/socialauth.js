@@ -8,11 +8,13 @@ import { auth } from "../firebase/config";
 
 WebBrowser.maybeCompleteAuthSession();
 
-const setprevauthObj = (authObj, idToken) =>
-  AsyncStorage.setItem(
-    "prevauth",
-    JSON.stringify({ prevauth: authObj, prevtoken: idToken })
-  );
+const setprevGleAuthTkn = ({ idToken }) => {
+  AsyncStorage.setItem("prevauthtkn", JSON.stringify({ prevtoken: idToken }));
+};
+
+export const setprevAuthObj = ({ authObj }) => {
+  AsyncStorage.setItem("prevauthObj", JSON.stringify({ prevauth: authObj }));
+};
 
 export const useGoogleAuth = () => {
   const [request, response, promptAsync] = Google.useAuthRequest({
@@ -33,7 +35,7 @@ export const useGoogleAuth = () => {
       const credential = GoogleAuthProvider.credential(id_token);
       signInWithCredential(auth, credential);
 
-      setprevauthObj(auth, id_token);
+      setprevGleAuthTkn({ idToken: id_token });
     }
   }, [response]);
 
@@ -44,7 +46,7 @@ export const ReauthenticateWithFirebase = (prevauth, previdtoken) => {
   try {
     const credential = GoogleAuthProvider.credential(previdtoken);
 
-    reauthenticateWithCredential(prevauth?.currentUser, credential);
+    reauthenticateWithCredential(prevauth, credential);
   } catch (err) {
     alert("Google sign in error, try again");
   }

@@ -58,18 +58,16 @@ const HomeScreen = () => {
         <FlatList
           style={{ paddingHorizontal: 2 }}
           data={[1, 2, 3, 4, 5]}
-          keyExtractor={(item) => item}
+          keyExtractor={(item, idx) => item + idx}
           showsVerticalScrollIndicator={false}
-          numColumns={2}
           renderItem={({ item }) => <SquareSkeleton />}
         />
       ) : (
         <FlatList
           style={{ paddingHorizontal: 2 }}
           data={myprompts}
-          keyExtractor={(item) => item?.promptUid}
+          keyExtractor={(item, idx) => item?.promptUid + idx}
           showsVerticalScrollIndicator={false}
-          numColumns={2}
           renderItem={({ item }) => (
             <PreviewCtr
               promptUid={item?.promptUid}

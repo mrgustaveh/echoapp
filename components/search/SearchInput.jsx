@@ -33,11 +33,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
     borderWidth: 0.5,
     borderColor: colors.lineclr,
-    borderRadius: 6,
+    borderRadius: 4,
   },
   input: {
     ...text,
-    marginLeft: 8,
+    marginLeft: 6,
+    textAlignVertical: "center",
     width: "92%",
   },
 });
