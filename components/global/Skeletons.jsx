@@ -24,7 +24,7 @@ export const SquareSkeleton = () => {
   return (
     <MotiView style={styles.skltnsctr}>
       <Skeleton
-        width="98%"
+        width="100%"
         height={58}
         colorMode="dark"
         radius={4}
