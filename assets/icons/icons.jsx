@@ -373,15 +373,23 @@ export const CreateIcon = () => {
 export const ChevronIcon = () => {
   return (
     <Svg
-      width="8"
-      height="15"
-      viewBox="0 0 12 20"
+      width="22"
+      height="10"
+      viewBox="0 0 22 10"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
       <Path
-        d="M11.1 1.39999L2.8 9.69999L11.1 18L9.7 19.4L0 9.69999L9.7 -7.62939e-06L11.1 1.39999Z"
-        fill="#7F7F7F"
+        d="M4.25 0.5L1.25 3.5L4.25 6.5"
+        stroke="#7F7F7F"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <Path
+        d="M2 3.5H15.7812C18.5356 3.5 20.75 5.81234 20.75 8.5625V9.5"
+        stroke="#7F7F7F"
+        stroke-linecap="round"
+        stroke-linejoin="round"
       />
     </Svg>
   );
