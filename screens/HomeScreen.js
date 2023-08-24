@@ -20,27 +20,25 @@ const HomeScreen = () => {
   const [isrfreshing, setisrefreshing] = useState(false);
 
   const { idToken } = useAuth();
-  const { setisvible, isvisible, setisloading } = usealert();
+  const { isvisible, showloadingalert, hidealert } = usealert();
 
   const onfetchprompts = async () => {
+    showloadingalert();
+
     const { isok, prompts } = await getmyprompts({ idtoken: idToken });
-    setisvible(true);
-    setisloading(true);
 
     if (isok) {
       setmyprompts(prompts);
 
       setTimeout(() => {
-        setisvible(false);
+        hidealert();
       }, 3500);
     }
   };
 
   const onRefresh = useCallback(() => {
     setisrefreshing(true);
-
     onfetchprompts();
-
     setisrefreshing(false);
   }, []);
 

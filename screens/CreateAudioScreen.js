@@ -31,7 +31,7 @@ const CreateAudioScreen = () => {
     setnotificationtitle,
     setnotificationtext,
   } = usenotification();
-  const { setisvible, setisloading } = usealert();
+  const { showloadingalert, hidealert } = usealert();
 
   const { red, text } = colors;
 
@@ -56,8 +56,7 @@ const CreateAudioScreen = () => {
   };
 
   const oncreateprompt = async () => {
-    setisvible(true);
-    setisloading(true);
+    showloadingalert();
 
     const { isok, prompt } = await createprompt({
       idtoken: idToken,
@@ -67,8 +66,7 @@ const CreateAudioScreen = () => {
     });
 
     if (isok) {
-      setisvible(false);
-      setisloading(false);
+      hidealert();
 
       setshownotification(true);
       setnotifiIsloading(false);
@@ -78,8 +76,7 @@ const CreateAudioScreen = () => {
 
       navigation.navigate("detail", { promptID: prompt?.promptUid });
     } else {
-      setisvible(false);
-      setisloading(false);
+      hidealert();
 
       setshownotification(true);
       setnotifiIsloading(false);
@@ -90,8 +87,7 @@ const CreateAudioScreen = () => {
   };
 
   const ongetaudiosamples = async () => {
-    setisvible(true);
-    setisloading(true);
+    showloadingalert();
 
     const { isok, samples } = await getaudiosamples({ idtoken: idToken });
 
@@ -99,7 +95,7 @@ const CreateAudioScreen = () => {
       setaudiosamples(samples);
 
       setTimeout(() => {
-        setisvible(false);
+        hidealert();
       }, 3500);
     }
   };

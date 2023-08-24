@@ -2,11 +2,12 @@ import { createContext, useContext, useState } from "react";
 
 const alertctx = createContext({
   isvisible: false,
-  setisvible: () => {},
   isloading: false,
-  setisloading: () => {},
   issuccess: false,
-  setissuccess: () => {},
+  showloadingalert: () => {},
+  showsuccessalert: () => {},
+  showerralert: () => {},
+  hidealert: () => {},
 });
 
 export const AlertProvider = ({ children }) => {
@@ -14,15 +15,39 @@ export const AlertProvider = ({ children }) => {
   const [isloading, setisloading] = useState(false);
   const [issuccess, setissuccess] = useState(false);
 
+  const showloadingalert = () => {
+    setisvible(true);
+    setisloading(true);
+  };
+
+  const showsuccessalert = () => {
+    setisvible(true);
+    setisloading(false);
+    setissuccess(true);
+  };
+
+  const showerralert = () => {
+    setisvible(true);
+    setisloading(false);
+    setissuccess(false);
+  };
+
+  const hidealert = () => {
+    setisvible(false);
+    setisloading(false);
+    setissuccess(false);
+  };
+
   return (
     <alertctx.Provider
       value={{
         isvisible,
-        setisvible,
         isloading,
-        setisloading,
         issuccess,
-        setissuccess,
+        showloadingalert,
+        showsuccessalert,
+        showerralert,
+        hidealert,
       }}
     >
       {children}
