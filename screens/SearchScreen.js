@@ -18,12 +18,7 @@ const SearchScreen = () => {
   const navigation = useNavigation();
 
   const { idToken } = useAuth();
-  const {
-    setshownotification,
-    setnotificationtitle,
-    setnotificationtext,
-    setissuccess,
-  } = usenotification();
+  const { showerrnotification } = usenotification();
 
   const goback = () => navigation.goBack();
 
@@ -35,10 +30,7 @@ const SearchScreen = () => {
 
     if (isok) setpromptsfromsrch(prompts);
     else {
-      setshownotification(true);
-      setnotificationtitle("error");
-      setnotificationtext("An error occurred at search");
-      setissuccess(false);
+      showerrnotification("error", "An error occurred at search");
     }
   };
 

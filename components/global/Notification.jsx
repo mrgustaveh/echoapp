@@ -8,23 +8,21 @@ import { colors } from "../../constants/colors";
 
 export const Notification = () => {
   const {
-    setshownotification,
     shownotification,
     notificationtitle,
-    notificationtext,
+    notificationtent,
     notifiIsloading,
     issuccess,
+    hidenotification,
   } = usenotification();
 
   useEffect(() => {
     setTimeout(() => {
       if (shownotification) {
-        setshownotification(false);
+        hidenotification();
       }
     }, 6500);
   }, []);
-
-  const onclosenotification = () => setshownotification(false);
 
   return (
     <View style={[styles.container, styles.row]}>
@@ -61,11 +59,9 @@ export const Notification = () => {
         <View style={styles.txtctr}>
           <Text style={subtitle}>{notificationtitle}</Text>
 
-          <Text style={text}>{notificationtext}</Text>
+          <Text style={text}>{notificationtent}</Text>
         </View>
       </View>
-
-      <Pressable onPress={onclosenotification}>{/* <CloseIcon /> */}</Pressable>
     </View>
   );
 };

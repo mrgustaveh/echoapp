@@ -24,18 +24,12 @@ const CreateAudioScreen = () => {
 
   const navigation = useNavigation();
   const { idToken } = useAuth();
-  const {
-    setshownotification,
-    setnotifiIsloading,
-    setissuccess,
-    setnotificationtitle,
-    setnotificationtext,
-  } = usenotification();
+  const { showsuccessnotification, showerrnotification } = usenotification();
   const { showloadingalert, hidealert } = usealert();
 
   const { red, text } = colors;
 
-  const CONTENT_THRESH = 200;
+  const CONTENT_THRESH = 400;
 
   const emoji_regex =
     /[\p{Extended_Pictographic}\u{1F3FB}-\u{1F3FF}\u{1F9B0}-\u{1F9B3}]/u;
@@ -68,21 +62,16 @@ const CreateAudioScreen = () => {
     if (isok) {
       hidealert();
 
-      setshownotification(true);
-      setnotifiIsloading(false);
-      setissuccess(true);
-      setnotificationtitle("success");
-      setnotificationtext("your prompt was processed successfully");
+      showsuccessnotification(
+        "success",
+        "your prompt was processed successfully"
+      );
 
       navigation.navigate("detail", { promptID: prompt?.promptUid });
     } else {
       hidealert();
 
-      setshownotification(true);
-      setnotifiIsloading(false);
-      setissuccess(false);
-      setnotificationtitle("error");
-      setnotificationtext("we were unable to process your prompt");
+      showerrnotification("error", "we were unable to process your prompt");
     }
   };
 

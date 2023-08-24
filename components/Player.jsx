@@ -48,37 +48,32 @@ export const Player = () => {
 
   const { hideplayer, plyrisvisible, audtitle, audURL } = useplayer();
   const {
-    setshownotification,
-    setnotifiIsloading,
-    setissuccess,
-    setnotificationtitle,
-    setnotificationtext,
+    showloadingnotification,
+    showsuccessnotification,
+    showerrnotification,
+    hidenotification,
   } = usenotification();
 
   const requestmediapermission = async () => {
     const res = await MediaLibrary.requestPermissionsAsync();
-
-    if (res.status === "granted") setHasPermission(true);
+    if (res.status === "granted") {
+      setHasPermission(true);
+    }
   };
 
   const ondownload = () => {
-    if (hasPermission)
+    if (MediaLibrary.PermissionStatus.GRANTED || hasPermission)
       downloadmedia({ URL: audURL, title: audtitle })
         .then((res) => {
-          setshownotification(true);
-          setnotifiIsloading(true);
-          setnotificationtitle("downloading");
-          setnotificationtext(
+          showloadingnotification(
+            "downloading",
             `downloading file - ${String(audtitle).substring(0, 5)}...mp3`
           );
 
           setTimeout(() => {
             if (res?.filesaved) {
-              setshownotification(true);
-              setnotifiIsloading(false);
-              setissuccess(true);
-              setnotificationtitle("download complete");
-              setnotificationtext(
+              showsuccessnotification(
+                "download complete",
                 `${String(audtitle).substring(
                   0,
                   5
@@ -88,25 +83,18 @@ export const Player = () => {
           }, 1500);
         })
         .catch(() => {
-          setnotifiIsloading(false);
-          setissuccess(false);
-          setnotificationtitle("downloading");
-          setnotificationtext(`unable to download file - ${audtitle}.mp3`);
+          showerrnotification(
+            "download failure",
+            `unable to download file - ${audtitle}.mp3`
+          );
         })
         .finally(() => {
           setTimeout(() => {
-            setshownotification(false);
-            setnotifiIsloading(false);
-            setissuccess(false);
-            setnotificationtitle("");
-            setnotificationtext("");
+            hidenotification();
           }, 4500);
         });
     else {
-      setshownotification(true);
-      setissuccess(false);
-      setnotificationtitle("permission needed");
-      setnotificationtext("allow media access");
+      showerrnotification("permission required", "allow media access");
 
       requestmediapermission();
     }

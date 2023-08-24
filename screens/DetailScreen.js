@@ -29,11 +29,10 @@ const DetailScreen = ({ route, navigation }) => {
   const { idToken } = useAuth();
   const { isvisible, showloadingalert, hidealert } = usealert();
   const {
-    setshownotification,
-    setnotifiIsloading,
-    setissuccess,
-    setnotificationtitle,
-    setnotificationtext,
+    showloadingnotification,
+    showsuccessnotification,
+    showerrnotification,
+    hidenotification,
   } = usenotification();
 
   const getformateddate = (datestr) => {
@@ -84,19 +83,14 @@ const DetailScreen = ({ route, navigation }) => {
     if (isok) {
       hidealert();
 
-      setshownotification(true);
-      setnotifiIsloading(false);
-      setissuccess(true);
-      setnotificationtitle("success");
-      setnotificationtext("your prompt was deleted successfully");
+      showsuccessnotification(
+        "success",
+        "your prompt was deleted successfully"
+      );
 
       navigation.navigate("home");
     } else {
-      setshownotification(true);
-      setnotifiIsloading(false);
-      setissuccess(false);
-      setnotificationtitle("error");
-      setnotificationtext("we were unable to delete your prompt");
+      showerrnotification("error", "we were unable to delete your prompt");
     }
   };
 
