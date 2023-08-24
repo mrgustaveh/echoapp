@@ -1,9 +1,8 @@
 import { StyleSheet, TouchableOpacity, Image, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-// import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useGoogleAuth } from "../utils/socialauth";
 import { usealert } from "../context/alertctx";
-// import { useAuth } from "../context/authctxt";
 import { container, text } from "../constants/styles";
 import { colors } from "../constants/colors";
 
@@ -11,34 +10,27 @@ const googleimg = require("../assets/img/google.png");
 
 function Authentication() {
   const { signInWithGoogle } = useGoogleAuth();
-  // const { idToken } = useAuth();
-  const { setisvible, setisloading, setissuccess } = usealert();
+  const { showloadingalert, showerralert, hidealert } = usealert();
 
-  // const setprevauth = () =>
-  //   AsyncStorage.setItem(
-  //     "prevauth",
-  //     JSON.stringify({ prevauth: true, prevtoken: idToken })
-  //   );
+  const onsetprevauth = () =>
+    AsyncStorage.setItem("prevauth", JSON.stringify({ prevauth: true }));
 
   const ongooglesignin = () => {
     signInWithGoogle()
       .then((res) => {
-        setisvible(true);
-        setisloading(true);
+        showloadingalert();
 
         if (res?.type === "success") {
-          setisloading(true);
-          // setprevauth();
+          showloadingalert();
+          onsetprevauth();
         }
       })
       .catch(() => {
-        setisvible(true);
-        setisloading(false);
-        setissuccess(false);
+        showerralert();
       })
       .finally(() => {
         setTimeout(() => {
-          setisvible(false);
+          hidealert();
         }, 3500);
       });
   };

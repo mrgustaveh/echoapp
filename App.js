@@ -2,6 +2,7 @@ import "expo-dev-client";
 import { useCallback, useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useFonts } from "expo-font";
@@ -30,16 +31,31 @@ const Stack = createNativeStackNavigator();
 ExpoSplashScreen.preventAutoHideAsync();
 
 function App() {
-  const { setisvible, isvisible, setisloading, setissuccess } = usealert();
+  const {
+    isvisible,
+    showloadingalert,
+    showsuccessalert,
+    showerralert,
+    hidealert,
+  } = usealert();
   const { authenticated, idToken, setUserUid } = useAuth();
   const { shownotification } = usenotification();
 
   const [accountchecked, setaccountchecked] = useState(false);
 
   useEffect(() => {
-    if (authenticated && idToken !== null) {
-      setisvible(true);
-      setisloading(true);
+    AsyncStorage.getItem("prevauth").then((res) => {
+      const data = JSON.parse(res);
+
+      if (data?.prevauth) {
+        showloadingalert();
+      } else {
+        hidealert();
+      }
+    });
+
+    if (authenticated && idToken !== "") {
+      showloadingalert();
 
       getuser({ idtoken: idToken })
         .then(async (res) => {
@@ -51,15 +67,14 @@ function App() {
           }
 
           setaccountchecked(true);
-          setissuccess(true);
+          showsuccessalert();
         })
         .catch(() => {
           setaccountchecked(false);
-          setisloading(false);
-          setissuccess(false);
+          showerralert();
 
           setTimeout(() => {
-            setisvible(false);
+            hidealert();
           }, 3500);
         });
     }
