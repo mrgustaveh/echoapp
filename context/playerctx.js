@@ -2,11 +2,10 @@ import { createContext, useContext, useState } from "react";
 
 const playercontext = createContext({
   plyrisvisible: false,
-  setplyrisvisible: () => {},
   audtitle: "",
-  setaudtitle: () => {},
   audURL: "",
-  setaudURL: () => {},
+  showplayer: (title, Url) => {},
+  hideplayer: () => {},
 });
 
 export const PlayerProvider = ({ children }) => {
@@ -14,15 +13,26 @@ export const PlayerProvider = ({ children }) => {
   const [audtitle, setaudtitle] = useState("");
   const [audURL, setaudURL] = useState("");
 
+  const showplayer = (title, Url) => {
+    setplyrisvisible(true);
+    setaudtitle(title);
+    setaudURL(Url);
+  };
+
+  const hideplayer = () => {
+    setplyrisvisible(false);
+    setaudtitle("");
+    setaudURL("");
+  };
+
   return (
     <playercontext.Provider
       value={{
         plyrisvisible,
-        setplyrisvisible,
         audtitle,
-        setaudtitle,
         audURL,
-        setaudURL,
+        showplayer,
+        hideplayer,
       }}
     >
       {children}

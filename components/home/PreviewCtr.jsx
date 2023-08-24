@@ -8,16 +8,12 @@ import { text } from "../../constants/styles";
 export const PreviewCtr = ({ promptUid, description, audioUrl, title }) => {
   const navigation = useNavigation();
 
-  const { setplyrisvisible, setaudtitle, setaudURL } = useplayer();
+  const { showplayer } = useplayer();
 
   const gotodetail = () =>
     navigation.navigate("detail", { promptID: promptUid });
 
-  const playaudio = () => {
-    setaudtitle(title);
-    setaudURL(audioUrl);
-    setplyrisvisible(true);
-  };
+  const playaudio = () => showplayer(title, audioUrl);
 
   return (
     <TouchableOpacity onPress={gotodetail} style={styles.container}>

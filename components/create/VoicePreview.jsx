@@ -2,8 +2,6 @@ import { StyleSheet, TouchableOpacity, Image } from "react-native";
 import { useplayer } from "../../context/playerctx";
 import { colors } from "../../constants/colors";
 
-const placeholderimage = require("../../assets/img/placeholder.jpg");
-
 export const VoicePreview = ({
   preVimage,
   voiceid,
@@ -11,7 +9,7 @@ export const VoicePreview = ({
   setVoiceid,
   isactive,
 }) => {
-  const { setplyrisvisible, setaudURL, setaudtitle } = useplayer();
+  const { showplayer } = useplayer();
 
   return (
     <TouchableOpacity
@@ -23,9 +21,7 @@ export const VoicePreview = ({
       ]}
       onPress={() => {
         setVoiceid(voiceid);
-        setplyrisvisible(true);
-        setaudURL(audioUrl);
-        setaudtitle("The Theory Of Everything");
+        showplayer("The Theory Of Everything", audioUrl);
       }}
     >
       <Image source={{ uri: preVimage }} style={styles.image} />

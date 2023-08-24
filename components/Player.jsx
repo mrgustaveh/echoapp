@@ -46,7 +46,7 @@ export const Player = () => {
   const [isplaying, setisplaying] = useState(false);
   const [hasLoaded, sethasLoaded] = useState(false);
 
-  const { setplyrisvisible, plyrisvisible, audtitle, audURL } = useplayer();
+  const { hideplayer, plyrisvisible, audtitle, audURL } = useplayer();
   const {
     setshownotification,
     setnotifiIsloading,
@@ -189,7 +189,7 @@ export const Player = () => {
           runOnJS(pauseaudio);
         }
 
-        runOnJS(setplyrisvisible)(false);
+        runOnJS(hideplayer)();
       } else if (translateYSharedValue.value <= -SCREEN_HEIGHT / 14) {
         scrollTo(0);
       }
