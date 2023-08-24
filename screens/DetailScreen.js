@@ -27,7 +27,7 @@ const DetailScreen = ({ route, navigation }) => {
   const [formatteddate, setformatteddate] = useState("");
 
   const { idToken } = useAuth();
-  const { setisvible, isvisible, setisloading } = usealert();
+  const { isvisible, showloadingalert, hidealert } = usealert();
   const {
     setshownotification,
     setnotifiIsloading,
@@ -54,8 +54,7 @@ const DetailScreen = ({ route, navigation }) => {
   };
 
   const ongetpropmt = async () => {
-    setisvible(true);
-    setisloading(true);
+    showloadingalert();
 
     const { isok, prompt } = await getprompt({
       idtoken: idToken,
@@ -63,18 +62,19 @@ const DetailScreen = ({ route, navigation }) => {
     });
 
     if (isok) {
-      setisvible(false);
+      hidealert();
+
       setprompt(prompt?.prompt);
       setaudiotitle(prompt?.title);
       setaudioUrl(prompt?.audio[0]?.audio?.audio);
+
       gettimediff(prompt?.created);
       getformateddate(prompt?.created);
     }
   };
 
   const ondeleteprompt = async () => {
-    setisvible(true);
-    setisloading(true);
+    showloadingalert();
 
     const { isok } = await destroyprompt({
       idtoken: idToken,
@@ -82,7 +82,7 @@ const DetailScreen = ({ route, navigation }) => {
     });
 
     if (isok) {
-      setisvible(false);
+      hidealert();
 
       setshownotification(true);
       setnotifiIsloading(false);
