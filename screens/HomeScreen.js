@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { FlatList, RefreshControl } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { getmyprompts } from "../utils/api/prompts";
 import { useAuth } from "../context/authctxt";
 import { usealert } from "../context/alertctx";
@@ -18,6 +18,8 @@ const HomeScreen = () => {
 
   const [myprompts, setmyprompts] = useState([]);
   const [isrfreshing, setisrefreshing] = useState(false);
+
+  const isFocused = useIsFocused();
 
   const { idToken } = useAuth();
   const { isvisible, showloadingalert, hidealert } = usealert();
@@ -43,8 +45,10 @@ const HomeScreen = () => {
   }, []);
 
   useEffect(() => {
-    onfetchprompts();
-  }, []);
+    if (isFocused) {
+      onfetchprompts();
+    }
+  }, [isFocused]);
 
   const gotocreate = () => navigation.navigate("create");
 
