@@ -43,4 +43,6 @@ export const deleteaccount = async ({ idtoken, useruid }) => {
     },
     body: null,
   });
+
+  return { isok: res.ok };
 };
