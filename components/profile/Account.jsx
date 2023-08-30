@@ -7,6 +7,7 @@ import {
   View,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Divider } from "../global/Divider";
 import { useAuth } from "../../context/authctxt";
 import { usenotification } from "../../context/notificationctx";
 import { deleteaccount } from "../../utils/api/auth";
@@ -109,7 +110,8 @@ export const Account = ({ setshowacc }) => {
             },
           ]}
         >
-          By pressing Ok, you will erase your account and its associated data ?
+          By pressing Ok, you will erase your account and its associated data (
+          account details, prompts & any generated audio ) ?
         </Text>
 
         <Text
@@ -127,7 +129,7 @@ export const Account = ({ setshowacc }) => {
         >
           Sign out instead
         </Text>
-
+        <Divider />
         <View style={styles.actions}>
           <TouchableOpacity
             style={[styles.pressable, { width: "35%" }]}
@@ -162,6 +164,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.alertclr,
   },
   actionsctr: {
+    width: "96%",
     borderWidth: 0.5,
     borderColor: colors.lineclr,
     borderRadius: 4,
@@ -173,8 +176,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    borderTopWidth: 0.5,
-    borderColor: colors.lineclr,
   },
   pressable: {
     padding: 8,
