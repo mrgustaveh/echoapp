@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase/config";
 
 const authcontext = createContext({
@@ -15,11 +14,11 @@ export const AuthProvider = ({ children }) => {
   const [userUid, setUserUid] = useState("");
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user?.uid) {
-        const token = await user?.getIdToken(true);
-
         setauthenticated(true);
+
+        const token = await user?.getIdToken(true);
         setidToken(token);
       } else {
         setauthenticated(false);

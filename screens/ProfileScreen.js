@@ -14,8 +14,7 @@ function ProfileScreen() {
   const goback = () => navigation.goBack();
 
   const onsignout = async () => {
-    await AsyncStorage.removeItem("prevauthtkn");
-    await AsyncStorage.removeItem("prevauthObj");
+    await AsyncStorage.removeItem("prevauth");
 
     await auth.signOut();
   };
@@ -41,7 +40,7 @@ function ProfileScreen() {
 
         <TouchableOpacity onPress={onsignout} style={styles.signout}>
           <SignOutIcon />
-          <Text style={text}>Sign Out</Text>
+          <Text style={text}>Manage Account</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -62,7 +61,7 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   signout: {
-    width: "32%",
+    width: "60%",
     padding: 10,
     flexDirection: "row",
     alignItems: "center",
@@ -74,7 +73,7 @@ const styles = StyleSheet.create({
     borderColor: colors.lineclr,
   },
   container: {
-    width: "60%",
+    width: "32%",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",

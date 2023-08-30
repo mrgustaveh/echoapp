@@ -54,7 +54,7 @@ const HomeScreen = () => {
 
       {isvisible ? (
         <FlatList
-          style={{ paddingHorizontal: 2 }}
+          style={{ paddingHorizontal: 6 }}
           data={[1, 2, 3, 4, 5]}
           keyExtractor={(item, idx) => item + idx}
           showsVerticalScrollIndicator={false}
@@ -62,7 +62,7 @@ const HomeScreen = () => {
         />
       ) : (
         <FlatList
-          style={{ paddingHorizontal: 2 }}
+          style={{ paddingHorizontal: 6 }}
           data={myprompts}
           keyExtractor={(item, idx) => item?.promptUid + idx}
           showsVerticalScrollIndicator={false}

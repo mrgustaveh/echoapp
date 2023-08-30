@@ -10,18 +10,18 @@ const googleimg = require("../assets/img/google.png");
 
 function Authentication() {
   const { signInWithGoogle } = useGoogleAuth();
-  const { showloadingalert, showerralert, hidealert } = usealert();
+  const { showloadingalert, showsuccessalert, showerralert } = usealert();
 
   const onsetprevauth = () =>
     AsyncStorage.setItem("prevauth", JSON.stringify({ prevauth: true }));
 
   const ongooglesignin = () => {
+    showloadingalert();
+
     signInWithGoogle()
       .then((res) => {
-        showloadingalert();
-
         if (res?.type === "success") {
-          showloadingalert();
+          showsuccessalert();
           onsetprevauth();
         }
       })
@@ -29,9 +29,7 @@ function Authentication() {
         showerralert();
       })
       .finally(() => {
-        setTimeout(() => {
-          hidealert();
-        }, 3500);
+        showloadingalert();
       });
   };
 
