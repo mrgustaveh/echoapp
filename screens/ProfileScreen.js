@@ -1,23 +1,19 @@
+import { useState } from "react";
 import { Image, TouchableOpacity, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Subscriptions } from "../components/profile/Subscriptions";
+import { Account } from "../components/profile/Account";
 import { auth } from "../firebase/config";
 import { ChevronIcon, SignOutIcon } from "../assets/icons/icons";
 import { container, subtitle, text } from "../constants/styles";
 import { colors } from "../constants/colors";
 
 function ProfileScreen() {
+  const [showacc, setshowacc] = useState(false);
   const navigation = useNavigation();
 
   const goback = () => navigation.goBack();
-
-  const onsignout = async () => {
-    await AsyncStorage.removeItem("prevauth");
-
-    await auth.signOut();
-  };
 
   return (
     <SafeAreaView style={container}>
@@ -38,11 +34,16 @@ function ProfileScreen() {
           <Text style={[text, styles.title]}>go back</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={onsignout} style={styles.signout}>
+        <TouchableOpacity
+          onPress={() => setshowacc(true)}
+          style={styles.signout}
+        >
           <SignOutIcon />
-          <Text style={text}>Manage Account</Text>
+          <Text style={text}>Delete Account</Text>
         </TouchableOpacity>
       </View>
+
+      {showacc && <Account setshowacc={setshowacc} />}
     </SafeAreaView>
   );
 }
