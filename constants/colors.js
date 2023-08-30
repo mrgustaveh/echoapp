@@ -5,4 +5,5 @@ export const colors = {
   lineclr: "rgba(248, 250, 252, 0.2)",
   fbblue: "rgba(60, 84, 164, 0.6)",
   red: "rgba(209, 0, 0, 1)",
+  alertclr: "rgba(38, 38, 38, 0.8)",
 };
