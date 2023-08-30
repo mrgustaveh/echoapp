@@ -107,7 +107,7 @@ const CreateAudioScreen = () => {
     <SafeAreaView style={container}>
       <NavBar />
 
-      {/* <TextInput
+      <TextInput
         autoCorrect={false}
         value={audiotitle}
         onChangeText={(text) => setaudiotitle(text)}
@@ -120,7 +120,7 @@ const CreateAudioScreen = () => {
             color: titleerror() ? red : text,
           },
         ]}
-      /> */}
+      />
 
       <View style={styles.contentctr}>
         <TextInput
@@ -188,6 +188,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 4,
     marginHorizontal: 8,
+    marginBottom: 12,
     textAlignVertical: "center",
     borderWidth: 0.5,
     borderColor: colors.lineclr,
