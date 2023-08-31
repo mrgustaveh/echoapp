@@ -8,21 +8,24 @@ import { colors } from "../../constants/colors";
 
 export const Subscriptions = ({ currplan }) => {
   const { idToken } = useAuth();
-  const BROWSER_URL = "https://mburuanthony.github.io";
+  const BROWSER_URL = "https://romantic-secure-skunk.ngrok-free.app";
 
   const ongotobasic = async () => {
-    const BROWSER_PARAMS = { authToken: idToken, plan: "basic" };
-    await WebBrowser.openBrowserAsync(BROWSER_URL, BROWSER_PARAMS);
+    const URL = BROWSER_URL + `?authToken=${idToken}&plan=basic`;
+
+    await WebBrowser.openBrowserAsync(URL);
   };
 
   const ongotostandard = async () => {
-    const BROWSER_PARAMS = { authToken: idToken, plan: "standard" };
-    await WebBrowser.openBrowserAsync(BROWSER_URL, BROWSER_PARAMS);
+    const URL = BROWSER_URL + `?authToken=${idToken}&plan=standard`;
+
+    await WebBrowser.openBrowserAsync(URL);
   };
 
   const ongotopremium = async () => {
-    const BROWSER_PARAMS = { authToken: idToken, plan: "premium" };
-    await WebBrowser.openBrowserAsync(BROWSER_URL, BROWSER_PARAMS);
+    const URL = BROWSER_URL + `?authToken=${idToken}&plan=premium`;
+
+    await WebBrowser.openBrowserAsync(URL);
   };
 
   return (

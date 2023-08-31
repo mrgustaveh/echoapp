@@ -1,8 +1,7 @@
 import { useEffect } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import Lottie from "lottie-react-native";
 import { usenotification } from "../../context/notificationctx";
-// import { CloseIcon } from "../../assets/icons/icons";
 import { subtitle, text } from "../../constants/styles";
 import { colors } from "../../constants/colors";
 
