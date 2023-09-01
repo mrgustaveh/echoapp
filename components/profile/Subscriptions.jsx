@@ -1,31 +1,13 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Divider } from "../global/Divider";
-import * as WebBrowser from "expo-web-browser";
-import { useAuth } from "../../context/authctxt";
 import { ClipboardIcon, CheckIcon } from "../../assets/icons/icons";
 import { text } from "../../constants/styles";
 import { colors } from "../../constants/colors";
 
-export const Subscriptions = ({ currplan }) => {
-  const { idToken } = useAuth();
-  const BROWSER_URL = "https://romantic-secure-skunk.ngrok-free.app";
-
-  const ongotobasic = async () => {
-    const URL = BROWSER_URL + `?authToken=${idToken}&plan=basic`;
-
-    await WebBrowser.openBrowserAsync(URL);
-  };
-
-  const ongotostandard = async () => {
-    const URL = BROWSER_URL + `?authToken=${idToken}&plan=standard`;
-
-    await WebBrowser.openBrowserAsync(URL);
-  };
-
-  const ongotopremium = async () => {
-    const URL = BROWSER_URL + `?authToken=${idToken}&plan=premium`;
-
-    await WebBrowser.openBrowserAsync(URL);
+export const Subscriptions = ({ currplan, setplantype, setshowpurchase }) => {
+  const showpurchase = (plan) => {
+    setplantype(plan);
+    setshowpurchase(true);
   };
 
   return (
@@ -44,7 +26,10 @@ export const Subscriptions = ({ currplan }) => {
           {currplan === "basic" ? <CheckIcon /> : <View />}
         </View>
 
-        <TouchableOpacity style={styles.pressable} onPress={ongotobasic}>
+        <TouchableOpacity
+          style={styles.pressable}
+          onPress={() => showpurchase("basic")}
+        >
           <Text style={text}>
             {currplan === "basic" ? "Buy Again" : "Buy Plan"}
           </Text>
@@ -67,7 +52,10 @@ export const Subscriptions = ({ currplan }) => {
           {currplan === "standard" ? <CheckIcon /> : <View />}
         </View>
 
-        <TouchableOpacity style={styles.pressable} onPress={ongotostandard}>
+        <TouchableOpacity
+          style={styles.pressable}
+          onPress={() => showpurchase("standard")}
+        >
           <Text style={text}>
             {currplan === "standard" ? "Buy Again" : "Buy Plan"}
           </Text>
@@ -90,7 +78,10 @@ export const Subscriptions = ({ currplan }) => {
           {currplan === "premium" ? <CheckIcon /> : <View />}
         </View>
 
-        <TouchableOpacity style={styles.pressable} onPress={ongotopremium}>
+        <TouchableOpacity
+          style={styles.pressable}
+          onPress={() => showpurchase("premium")}
+        >
           <Text style={text}>
             {currplan === "premium" ? "Buy Again" : "Buy Plan"}
           </Text>
