@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { Subscriptions } from "../components/profile/Subscriptions";
 import { Account } from "../components/profile/Account";
+import { Purchase } from "../components/profile/Purchase";
 import { auth } from "../firebase/config";
 import { ChevronIcon, SignOutIcon } from "../assets/icons/icons";
 import { container, subtitle, text } from "../constants/styles";
@@ -11,6 +12,8 @@ import { colors } from "../constants/colors";
 
 function ProfileScreen() {
   const [showacc, setshowacc] = useState(false);
+  const [showpurchase, setshowpurchase] = useState(false);
+  const [plantype, setplantype] = useState("");
   const navigation = useNavigation();
 
   const goback = () => navigation.goBack();
@@ -26,7 +29,11 @@ function ProfileScreen() {
         <Text style={subtitle}>{auth?.currentUser?.email}</Text>
       </View>
 
-      <Subscriptions currplan="premium" />
+      <Subscriptions
+        currplan="premium"
+        setplantype={setplantype}
+        setshowpurchase={setshowpurchase}
+      />
 
       <View style={styles.actions}>
         <TouchableOpacity style={[styles.container]} onPress={goback}>
@@ -44,6 +51,9 @@ function ProfileScreen() {
       </View>
 
       {showacc && <Account setshowacc={setshowacc} />}
+      {showpurchase && (
+        <Purchase plantype={plantype} setshowpurchase={setshowpurchase} />
+      )}
     </SafeAreaView>
   );
 }
