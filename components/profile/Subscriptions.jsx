@@ -30,9 +30,7 @@ export const Subscriptions = ({ currplan, setplantype, setshowpurchase }) => {
           style={styles.pressable}
           onPress={() => showpurchase("basic")}
         >
-          <Text style={text}>
-            {currplan === "basic" ? "Buy Again" : "Buy Plan"}
-          </Text>
+          <Text style={text}>Get the basic plan</Text>
         </TouchableOpacity>
       </View>
 
@@ -56,9 +54,7 @@ export const Subscriptions = ({ currplan, setplantype, setshowpurchase }) => {
           style={styles.pressable}
           onPress={() => showpurchase("standard")}
         >
-          <Text style={text}>
-            {currplan === "standard" ? "Buy Again" : "Buy Plan"}
-          </Text>
+          <Text style={text}>Get the standard plan</Text>
         </TouchableOpacity>
       </View>
 
@@ -82,9 +78,7 @@ export const Subscriptions = ({ currplan, setplantype, setshowpurchase }) => {
           style={styles.pressable}
           onPress={() => showpurchase("premium")}
         >
-          <Text style={text}>
-            {currplan === "premium" ? "Buy Again" : "Buy Plan"}
-          </Text>
+          <Text style={text}>Get the premium plan</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -126,6 +120,8 @@ const styles = StyleSheet.create({
     padding: 10,
     alignItems: "center",
     borderRadius: 4,
-    backgroundColor: "rgba(31,31,31,1)",
+    borderWidth: 0.5,
+    borderColor: colors.lineclr,
+    backgroundColor: colors.primary,
   },
 });
