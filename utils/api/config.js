@@ -12,3 +12,8 @@ export const prompturls = {
 export const samplesurls = {
   samples: "app/aud-samples/",
 };
+
+export const purchaseurls = {
+  get: "pl/get/",
+  current: "pl/current/",
+};
