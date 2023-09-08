@@ -20,7 +20,7 @@ export const Notification = () => {
       if (shownotification) {
         hidenotification();
       }
-    }, 6500);
+    }, 5500);
   }, []);
 
   return (
