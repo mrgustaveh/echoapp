@@ -21,7 +21,6 @@ const DetailScreen = ({ route, navigation }) => {
   const { promptID } = route?.params;
 
   const [prompt, setprompt] = useState("");
-  const [audiotitle, setaudiotitle] = useState("");
   const [audioUrl, setaudioUrl] = useState("");
   const [timediff, settimediff] = useState("");
   const [formatteddate, setformatteddate] = useState("");
@@ -64,7 +63,6 @@ const DetailScreen = ({ route, navigation }) => {
       hidealert();
 
       setprompt(prompt?.prompt);
-      setaudiotitle(prompt?.title);
       setaudioUrl(prompt?.audio[0]?.audio?.audio);
 
       gettimediff(prompt?.created);
@@ -132,7 +130,7 @@ const DetailScreen = ({ route, navigation }) => {
         {isvisible ? (
           <FullwidthSkeleton />
         ) : (
-          <DetailPlayer audURL={audioUrl} audTitle={audiotitle} />
+          <DetailPlayer audURL={audioUrl} audTitle="*" />
         )}
       </View>
 
