@@ -13,7 +13,7 @@ export const PreviewCtr = ({ promptUid, description, audioUrl, title }) => {
   const gotodetail = () =>
     navigation.navigate("detail", { promptID: promptUid });
 
-  const playaudio = () => showplayer(title, audioUrl);
+  const playaudio = () => showplayer("*", audioUrl);
 
   return (
     <TouchableOpacity onPress={gotodetail} style={styles.container}>
