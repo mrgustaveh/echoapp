@@ -41,30 +41,21 @@ export const DetailPlayer = ({ audURL, audTitle }) => {
 
   const ondownload = () => {
     if (MediaLibrary.PermissionStatus.GRANTED || hasPermission)
-      downloadmedia({ URL: audURL, title: audTitle })
+      downloadmedia({ URL: audURL })
         .then((res) => {
-          showloadingnotification(
-            "downloading",
-            `downloading file - ${String(audTitle).substring(0, 5)}...mp3`
-          );
+          showloadingnotification("downloading", `downloading file (mp3)`);
 
           setTimeout(() => {
             if (res?.filesaved) {
               showsuccessnotification(
                 "download complete",
-                `${String(audtitle).substring(
-                  0,
-                  5
-                )}...mp3 downloaded successfully`
+                "file downloaded successfully"
               );
             }
           }, 1500);
         })
         .catch(() => {
-          showerrnotification(
-            "download failure",
-            `unable to download file - ${audtitle}.mp3`
-          );
+          showerrnotification("download failure", `unable to download file`);
         })
         .finally(() => {
           setTimeout(() => {
