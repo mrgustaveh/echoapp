@@ -1,10 +1,29 @@
+import { useEffect } from "react";
+import { BackHandler } from "react-native";
 import { StyleSheet, View } from "react-native";
 import Lottie from "lottie-react-native";
 import { usealert } from "../../context/alertctx";
-import { colors } from "../../constants/colors";
+import { usenotification } from "../../context/notificationctx";
 
 export const AppAlert = () => {
   const { isloading, issuccess } = usealert();
+  const { showloadingnotification } = usenotification();
+
+  const onPressBack = () => {
+    showloadingnotification(
+      "processing",
+      "please wait for the process to end..."
+    );
+    return true;
+  };
+
+  useEffect(() => {
+    BackHandler.addEventListener("hardwareBackPress", onPressBack);
+
+    return () => {
+      BackHandler.removeEventListener("hardwareBackPress", onPressBack);
+    };
+  }, []);
 
   return (
     <View style={styles.container}>
