@@ -1,6 +1,6 @@
 import { BASE_URL, prompturls } from "./config";
 
-export const createprompt = async ({ idtoken, ptitle, ptext, pvid }) => {
+export const createprompt = async ({ idtoken, ptext, pvid }) => {
   const URL = BASE_URL + prompturls.prompts;
 
   const res = await fetch(URL, {
@@ -9,7 +9,7 @@ export const createprompt = async ({ idtoken, ptitle, ptext, pvid }) => {
       AUthorization: idtoken,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ title: ptitle, prompt: ptext, vid: pvid }),
+    body: JSON.stringify({ prompt: ptext, vid: pvid }),
   });
 
   const createdprompt = await res.json();
