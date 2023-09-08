@@ -10,6 +10,7 @@ import * as ExpoSplashScreen from "expo-splash-screen";
 import { Audio, InterruptionModeIOS, InterruptionModeAndroid } from "expo-av";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { createaccount, getuser } from "./utils/api/auth";
+import { createOchars } from "./utils/api/purchase";
 import { AuthProvider, useAuth } from "./context/authctxt";
 import { AlertProvider, usealert } from "./context/alertctx";
 import {
@@ -61,6 +62,8 @@ function App() {
         .then(async (res) => {
           if (res.user?.length === 0) {
             const { user } = await createaccount({ idtoken: idToken });
+            await createOchars({ idtoken: idToken });
+
             setUserUid(user[0]?.user_uid);
           } else {
             setUserUid(res[0]?.user_uid);
