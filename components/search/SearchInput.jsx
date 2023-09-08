@@ -14,7 +14,7 @@ export const SearchInput = ({ searchtxt, setsearchtxt, onsearch }) => {
         autoCorrect={false}
         value={searchtxt}
         onChangeText={(text) => setsearchtxt(text)}
-        placeholder="search my audio ( title or content ) ..."
+        placeholder="search my audio ( prompt ) ..."
         placeholderTextColor={text}
         style={styles.input}
         onKeyPress={onsearch}
