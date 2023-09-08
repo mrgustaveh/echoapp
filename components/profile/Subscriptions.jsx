@@ -19,7 +19,7 @@ export const Subscriptions = ({ currplan, setplantype, setshowpurchase }) => {
           </View>
 
           <View style={styles.plandescription}>
-            <Text style={text}>Basic Plan</Text>
+            <Text style={text}>Basic</Text>
             <Text style={text}>$3 / 1,024 characters</Text>
           </View>
 
@@ -43,7 +43,7 @@ export const Subscriptions = ({ currplan, setplantype, setshowpurchase }) => {
           </View>
 
           <View style={styles.plandescription}>
-            <Text style={text}>Standard Plan</Text>
+            <Text style={text}>Standard</Text>
             <Text style={text}>$5 / 5,000 characters</Text>
           </View>
 
@@ -67,7 +67,7 @@ export const Subscriptions = ({ currplan, setplantype, setshowpurchase }) => {
           </View>
 
           <View style={styles.plandescription}>
-            <Text style={text}>Premium Plan</Text>
+            <Text style={text}>Premium</Text>
             <Text style={text}>$10 / 10,024 characters</Text>
           </View>
 
