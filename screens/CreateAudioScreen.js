@@ -10,14 +10,15 @@ import { VoicePreview } from "../components/create/VoicePreview";
 import { useAuth } from "../context/authctxt";
 import { usenotification } from "../context/notificationctx";
 import { createprompt } from "../utils/api/prompts";
+import { getmychars } from "../utils/api/purchase";
 import { colors } from "../constants/colors";
 import { container, subtitle, text } from "../constants/styles";
 import { getaudiosamples } from "../utils/api/samples";
 import { usealert } from "../context/alertctx";
 
 const CreateAudioScreen = () => {
-  const [audiotitle, setaudiotitle] = useState("");
   const [audiocontent, setaudiocontent] = useState("");
+  const [usablechars, setusablechars] = useState(0);
   const [keybrdisvsble, setkeybrdisvsble] = useState(false);
   const [voiceId, setVoiceid] = useState("");
   const [audiosamples, setaudiosamples] = useState([]);
@@ -27,20 +28,10 @@ const CreateAudioScreen = () => {
   const { showsuccessnotification, showerrnotification } = usenotification();
   const { showloadingalert, hidealert } = usealert();
 
-  const { red, text } = colors;
-
-  const CONTENT_THRESH = 400;
+  const CONTENT_THRESH = 1024;
 
   const emoji_regex =
     /[\p{Extended_Pictographic}\u{1F3FB}-\u{1F3FF}\u{1F9B0}-\u{1F9B3}]/u;
-
-  const titleerror = () => {
-    return audiotitle.length > 22 ||
-      emoji_regex.test(audiotitle) ||
-      audiotitle.includes(" ")
-      ? true
-      : false;
-  };
 
   const contenterror = () => {
     return audiocontent.length > CONTENT_THRESH ||
@@ -54,7 +45,6 @@ const CreateAudioScreen = () => {
 
     const { isok, prompt } = await createprompt({
       idtoken: idToken,
-      ptitle: audiotitle,
       ptext: audiocontent,
       pvid: voiceId,
     });
@@ -79,13 +69,15 @@ const CreateAudioScreen = () => {
     showloadingalert();
 
     const { isok, samples } = await getaudiosamples({ idtoken: idToken });
+    const { isok: charsok, chars } = await getmychars({ idtoken: idToken });
 
-    if (isok) {
+    if (isok && charsok) {
       setaudiosamples(samples);
+      setusablechars(chars);
 
       setTimeout(() => {
         hidealert();
-      }, 3500);
+      }, 3000);
     }
   };
 
@@ -107,21 +99,6 @@ const CreateAudioScreen = () => {
     <SafeAreaView style={container}>
       <NavBar />
 
-      <TextInput
-        autoCorrect={false}
-        value={audiotitle}
-        onChangeText={(text) => setaudiotitle(text)}
-        placeholder="choose a title"
-        placeholderTextColor={colors.text}
-        onChange={titleerror}
-        style={[
-          styles.titleinput,
-          {
-            color: titleerror() ? red : text,
-          },
-        ]}
-      />
-
       <View style={styles.contentctr}>
         <TextInput
           value={audiocontent}
@@ -138,13 +115,34 @@ const CreateAudioScreen = () => {
 
         <View style={{ flexDirection: "row" }}>
           <Text
-            style={[styles.charcount, { color: contenterror() ? red : text }]}
+            style={[
+              styles.charcount,
+              {
+                color:
+                  contenterror() || audiocontent.length > usablechars
+                    ? colors.red
+                    : colors.text,
+              },
+            ]}
           >
             {audiocontent.length} of {CONTENT_THRESH}
           </Text>
           <Text style={styles.chars}>characters</Text>
         </View>
       </View>
+
+      <Text
+        style={[
+          text,
+          {
+            textAlign: "left",
+            paddingHorizontal: 8,
+            marginTop: 10,
+          },
+        ]}
+      >
+        ({usablechars}) Usable characters
+      </Text>
 
       <View style={styles.voicesctr}>
         <Text style={[subtitle, { marginTop: 8 }]}>Select a voice to use</Text>
@@ -174,7 +172,7 @@ const CreateAudioScreen = () => {
         <BottomBtn
           title="create"
           icon={<CreateIcon />}
-          btnDisabled={titleerror() || contenterror()}
+          btnDisabled={contenterror() || audiocontent.length > usablechars}
           onclick={oncreateprompt}
         />
       )}
@@ -223,7 +221,7 @@ const styles = StyleSheet.create({
     ...text,
   },
   voicesctr: {
-    marginTop: 12,
+    marginTop: 10,
     marginHorizontal: 8,
   },
 });
