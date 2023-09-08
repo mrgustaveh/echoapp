@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Image, TouchableOpacity, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
@@ -6,6 +6,9 @@ import { Subscriptions } from "../components/profile/Subscriptions";
 import { Account } from "../components/profile/Account";
 import { Purchase } from "../components/profile/Purchase";
 import { auth } from "../firebase/config";
+import { usealert } from "../context/alertctx";
+import { useAuth } from "../context/authctxt";
+import { getlastpurchase } from "../utils/api/purchase";
 import { ChevronIcon, SignOutIcon } from "../assets/icons/icons";
 import { container, subtitle, text } from "../constants/styles";
 import { colors } from "../constants/colors";
@@ -14,9 +17,37 @@ function ProfileScreen() {
   const [showacc, setshowacc] = useState(false);
   const [showpurchase, setshowpurchase] = useState(false);
   const [plantype, setplantype] = useState("");
+  const [currplan, setcurrplan] = useState("");
   const navigation = useNavigation();
 
+  const { showloadingalert, showerralert, hidealert } = usealert();
+  const { idToken } = useAuth();
+
   const goback = () => navigation.goBack();
+
+  const ongetmycurrentplan = async () => {
+    showloadingalert();
+
+    const { isok, plan } = await getlastpurchase(idToken);
+
+    if (isok) {
+      setcurrplan(plan?.plantype);
+
+      setTimeout(() => {
+        hidealert();
+      }, 2500);
+    } else {
+      showerralert();
+
+      setTimeout(() => {
+        hidealert();
+      }, 2500);
+    }
+  };
+
+  useEffect(() => {
+    ongetmycurrentplan();
+  }, []);
 
   return (
     <SafeAreaView style={container}>
@@ -30,7 +61,7 @@ function ProfileScreen() {
       </View>
 
       <Subscriptions
-        currplan="premium"
+        currplan={currplan}
         setplantype={setplantype}
         setshowpurchase={setshowpurchase}
       />
@@ -46,7 +77,7 @@ function ProfileScreen() {
           style={styles.signout}
         >
           <SignOutIcon />
-          <Text style={text}>Delete Account</Text>
+          <Text style={text}>Delete My Account</Text>
         </TouchableOpacity>
       </View>
 
