@@ -118,6 +118,7 @@ export const Account = ({ setshowacc }) => {
           style={[
             subtitle,
             {
+              width: 98,
               marginBottom: 34,
               paddingHorizontal: 8,
               textDecorationLine: "underline",
