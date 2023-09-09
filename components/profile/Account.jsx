@@ -44,17 +44,17 @@ export const Account = ({ setshowacc }) => {
       });
   };
 
-  const ondeleteAccount = () => {
+  const ondeleteAccount = async () => {
     showloadingnotification("account deletion", "deleting your account...");
+
+    const { isok } = await deleteaccount({
+      idtoken: idToken,
+      useruid: userUid,
+    });
 
     auth.currentUser
       .delete()
-      .then(async () => {
-        const { isok } = await deleteaccount({
-          idtoken: idToken,
-          useruid: userUid,
-        });
-
+      .then(async (res) => {
         if (isok) {
           showsuccessnotification(
             "account deletion",

@@ -17,7 +17,7 @@ export const getlastpurchase = async (idtoken) => {
 };
 
 export const createOchars = async ({ idtoken }) => {
-  const URL = BASE_URL + purchaseurls.current;
+  const URL = BASE_URL + purchaseurls.get;
 
   const res = await fetch(URL, {
     method: "POST",
@@ -25,7 +25,11 @@ export const createOchars = async ({ idtoken }) => {
       Authorization: idtoken,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ charsCount: 0 }),
+    body: JSON.stringify({
+      method: "zero",
+      purchaseRef: "zero",
+      plantype: "zero",
+    }),
   });
 
   return { isok: res.ok };
