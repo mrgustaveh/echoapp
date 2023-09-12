@@ -63,10 +63,9 @@ function App() {
           if (res.user?.length === 0) {
             const { user } = await createaccount({ idtoken: idToken });
             await createOchars({ idtoken: idToken });
-
             setUserUid(user[0]?.user_uid);
           } else {
-            setUserUid(res[0]?.user_uid);
+            setUserUid(res?.user[0]?.user_uid);
           }
 
           setaccountchecked(true);
@@ -75,7 +74,8 @@ function App() {
         .catch(() => {
           setaccountchecked(false);
           showerralert();
-
+        })
+        .finally(() => {
           setTimeout(() => {
             hidealert();
           }, 3500);

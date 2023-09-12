@@ -7,8 +7,10 @@ import {
   View,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useGoogleAuth } from "../../utils/socialauth";
 import { Divider } from "../global/Divider";
 import { useAuth } from "../../context/authctxt";
+import { usealert } from "../../context/alertctx";
 import { usenotification } from "../../context/notificationctx";
 import { deleteaccount } from "../../utils/api/auth";
 import { auth } from "../../firebase/config";
@@ -23,6 +25,8 @@ export const Account = ({ setshowacc }) => {
     hidenotification,
   } = usenotification();
   const { idToken, userUid } = useAuth();
+  const { signInWithGoogle } = useGoogleAuth();
+  const { showloadingalert, hidealert } = usealert();
 
   const onsignout = () => {
     showloadingnotification("sign out", "signing you out...");
@@ -44,33 +48,38 @@ export const Account = ({ setshowacc }) => {
       });
   };
 
-  const ondeleteAccount = async () => {
-    showloadingnotification("account deletion", "deleting your account...");
+  const ondeleteAccount = () => {
+    showloadingnotification(
+      "account deletion",
+      "please sign in to your account, to start deletion..."
+    );
 
-    const { isok } = await deleteaccount({
-      idtoken: idToken,
-      useruid: userUid,
-    });
+    setTimeout(() => {
+      signInWithGoogle().then(async (res) => {
+        showloadingalert();
+        showloadingnotification("account deletion", "deleting your account...");
 
-    auth.currentUser
-      .delete()
-      .then(async (res) => {
+        const { isok } = await deleteaccount({
+          idtoken: idToken,
+          useruid: userUid,
+        });
+
+        await auth.currentUser.delete();
+        await auth.signOut();
+        auth.currentUser;
+
         if (isok) {
           showsuccessnotification(
             "account deletion",
             "your account & data were deleted successfully"
           );
         }
-      })
-      .catch(() => {
-        showerrnotification(
-          "account deletion",
-          "please sign in again to delete your account"
-        );
-      })
-      .finally(() => {
-        hidenotification();
+
+        setTimeout(() => {
+          hidealert();
+        }, 3500);
       });
+    }, 2500);
   };
 
   const onPressBack = () => {
