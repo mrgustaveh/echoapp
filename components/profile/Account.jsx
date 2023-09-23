@@ -66,7 +66,6 @@ export const Account = ({ setshowacc }) => {
 
         await auth.currentUser.delete();
         await auth.signOut();
-        auth.currentUser;
 
         if (isok) {
           showsuccessnotification(
