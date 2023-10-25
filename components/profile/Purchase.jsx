@@ -17,8 +17,8 @@ export const Purchase = ({ plantype, setshowpurchase }) => {
 
   const ongotoplanpage = async () => {
     setshowpurchase(false);
-    const BROWSER_URL = "http://192.168.82.210:3000";
-    const URL = BROWSER_URL + `?authToken=${idToken}&plan=${plantype}`;
+    const CHECKOUT_URL = "https://ac-echo-checkout.vercel.app";
+    const URL = CHECKOUT_URL + `?authToken=${idToken}&plan=${plantype}`;
 
     await WebBrowser.openBrowserAsync(URL);
   };
